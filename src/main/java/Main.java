@@ -7,28 +7,41 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        printMenu();
-        
-        Scanner input = new Scanner(System.in);
-        int option = input.nextInt();
-        switch (option){
-            case 1:
-            try {    
-                DAO.printProducts();
-            } catch (Exception e) {
-                System.out.println("Exception e occured. Sad face.");
+        while (true) {
+            printMenu();
+            
+            Scanner input = new Scanner(System.in);
+            int option = input.nextInt();
+            switch (option){
+                case 1:
+                try {    
+                    DAO.printProducts();
+                } catch (Exception e) {
+                    System.out.println("Exception e occured. Sad face.");
+                }
+                    break;
+
+                case 2:
+
+                    break;
+
+                case 3:
+                    break;
+
+                case 4:
+                    System.exit(0);
+                    break;
+                
+                case 5:
+                    System.out.println("Which id to delete?");    
+                    int id = input.nextInt();   
+                    DAO.deleteProduct(id);
+                    break;
+                
+                case 666: 
+                    DAO.restoreDatabase();
+                    break;
             }
-                break;
-
-            case 2:
-
-                break;
-
-            case 3:
-                break;
-
-            case 4:
-                break;
         }
     }
 
@@ -38,6 +51,7 @@ public class Main {
         System.out.println("(2) Log in");
         System.out.println("(3) Register");
         System.out.println("(4) Exit");
+        System.out.println("(5) Delete Product");
     }
 
 

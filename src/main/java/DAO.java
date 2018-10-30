@@ -14,7 +14,6 @@ public class DAO {
         try {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:test.db");
-            System.out.println("Opened database successfully");
             
             stmt = c.createStatement();
             ResultSet rs = stmt.executeQuery( "SELECT * FROM PRODUCTS;" );
@@ -26,7 +25,7 @@ public class DAO {
                 //boolean isAvailable = rs.getBoolean("isAvailable");
                 int category_id = rs.getInt("category_id");
                 
-                //System.out.println( "ID = " + id );
+                System.out.println( "ID = " + id );
                 System.out.println( "NAME = " + name );
                 System.out.println( "PRICE = " + price );
                 System.out.println( "AMOUNT = " + amount );
@@ -44,6 +43,28 @@ public class DAO {
     }
 
 
+
+    public static void deleteProduct(int id) {
+        Connection c = null;
+        Statement stmt = null;
+        
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:test.db");
+            c.setAutoCommit(false);
+            stmt = c.createStatement();
+            String sql = "DELETE from PRODUCTS where ID=" + id + ";";
+            stmt.executeUpdate(sql);
+            c.commit();
+            stmt.close();
+            c.close();
+            } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+            }
+            System.out.println("Product deleted successfully");
+    }
+
     // to nie działa raczej 
     // public void insertProduct(String name, Bigdecimal price, int amount, String isAvailable, int category_id) {
     //     Class.forName("org.sqlite.JDBC");
@@ -55,4 +76,80 @@ public class DAO {
     //     stmt.executeUpdate(sql);
     // }
     
+
+    public static void restoreDatabase() {
+        File file = new File("test.db");
+        if(file.delete()){
+            System.out.println("test.db File deleted");
+        } else System.out.println("File test.db doesn't exists");  
+    
+        Connection c = null;
+        Statement stmt = null; 
+      
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:test.db");
+            System.out.println("Opened database successfully");
+             stmt = c.createStatement();
+            String sql = "CREATE TABLE `CATEGORIES`" +
+                "( `id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+                "`name`	TEXT NOT NULL, " +
+                "`isAvailable`	BOOLEAN NOT NULL, " +
+                "`category_type_id`	INT NOT NULL, " + 
+                "FOREIGN KEY(`category_type_id`) REFERENCES `CATEGORIES`)" ;
+             String sql2 = "CREATE TABLE `CATEGORY_TYPES` ( " +
+                " `id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+                "`name`	TEXT NOT NULL)";
+             String sql3 = " CREATE TABLE `ORDERS` ( " +
+                "`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " + 
+                "`user_id`	INT NOT NULL, " +
+                "`order_created_at`	INT NOT NULL, " +
+                "`order_status_id`	INT NOT NULL, " +
+                "FOREIGN KEY(`user_id`) REFERENCES `USERS`(`id`) ) " ;
+             String sql4 = "CREATE TABLE `ORDER_STATUSES` ( " +
+                "`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+                "`status`	TEXT NOT NULL)" ;
+             String sql5 = "CREATE TABLE `PRODUCTS` ( " +
+                "`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+                "`name`	TEXT NOT NULL, " +
+                "`price`	REAL NOT NULL, " +
+                "`amount`	INT NOT NULL, " +
+                "`isAvailable`	BOOLEAN NOT NULL, " +
+                "`category_id`	INT NOT NULL )";
+             String sql6 = "CREATE TABLE `PRODUCTS_IN_ORDERS` " +
+                "(`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+                "`order_id`	INT NOT NULL, " +
+                "`product_id`	INT NOT NULL, " +
+                "`amount`	INT NOT NULL, " +
+                "FOREIGN KEY(`order_id`) REFERENCES `ORDERS`(`id`) ) ";
+             String sql7 = "CREATE TABLE `USERS` " +
+                "(`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+                "`name`	TEXT NOT NULL, " +
+                "`user_type_id`	INT NOT NULL) " ;
+             String sql8 = "CREATE TABLE `USER_TYPES` " +
+                "(`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+                "`type`	TEXT NOT NULL) ";
+                
+            stmt.executeUpdate(sql);
+            stmt.executeUpdate(sql2);
+            stmt.executeUpdate(sql3);
+            stmt.executeUpdate(sql4);
+            stmt.executeUpdate(sql5);
+            stmt.executeUpdate(sql6);
+            stmt.executeUpdate(sql7);
+            stmt.executeUpdate(sql8);
+            String sql9 = "INSERT INTO PRODUCTS (NAME,PRICE,AMOUNT,isAvailable,category_id) " + "VALUES ('Pencil', 3.50, 10, 'True', 1);"; 
+            stmt.executeUpdate(sql9);
+            String sql10 = "INSERT INTO PRODUCTS (NAME,PRICE,AMOUNT,isAvailable,category_id) " + "VALUES ('Pen', 5, 15, 'True', 1);"; 
+            stmt.executeUpdate(sql10);
+            String sql11 = "INSERT INTO PRODUCTS (NAME,PRICE,AMOUNT,isAvailable,category_id) " + "VALUES ('Notepad', 2, 20, 'True', 1);"; 
+            stmt.executeUpdate(sql11);
+            stmt.close();
+            c.close();
+            } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+            }
+    }
+
 }
