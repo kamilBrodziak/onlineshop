@@ -65,6 +65,28 @@ public class DAO {
             System.out.println("Product deleted successfully");
     }
 
+
+    public static void addProduct(String name, Float price, int amount, int category_id) {
+        Connection c = null;
+        Statement stmt = null;
+        
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:test.db");
+            c.setAutoCommit(false);
+            stmt = c.createStatement();
+            String sql = "INSERT INTO PRODUCTS (NAME,PRICE,AMOUNT,isAvailable,category_id) " + "VALUES ('" + name + "'," + price + "," + amount + ", 'True'," + category_id + ");" ;
+            stmt.executeUpdate(sql);
+            c.commit();
+            stmt.close();
+            c.close();
+            } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+            }
+            System.out.println("Product added successfully");
+    }
+
     // to nie działa raczej 
     // public void insertProduct(String name, Bigdecimal price, int amount, String isAvailable, int category_id) {
     //     Class.forName("org.sqlite.JDBC");

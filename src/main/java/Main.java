@@ -1,3 +1,4 @@
+import java.math.BigDecimal;
 import java.util.*;
 
 
@@ -38,6 +39,18 @@ public class Main {
                     DAO.deleteProduct(id);
                     break;
                 
+                case 6:
+                    System.out.println("Please type in the name of the product:");
+                    String name = input.next();
+                    System.out.println("Please type in the price:");
+                    float price = input.nextFloat();
+                    System.out.println("Please type in the amount:");
+                    int amount = input.nextInt();
+                    System.out.println("Please type in category_id:");
+                    int category_id = input.nextInt();
+                    DAO.addProduct(name, price, amount, category_id);
+                    break;
+                
                 case 666: 
                     DAO.restoreDatabase();
                     break;
@@ -52,6 +65,7 @@ public class Main {
         System.out.println("(3) Register");
         System.out.println("(4) Exit");
         System.out.println("(5) Delete Product");
+        System.out.println("(6) Add Product");
     }
 
 
