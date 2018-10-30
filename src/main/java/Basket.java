@@ -1,33 +1,29 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Iterator;
+import java.util.*;
 
 public class Basket {
-    private static int id = 0;
-    private Iterator iterator = new ProductIterator();
-    Map<Product, Integer> products;
+    private Iterator iterator;
+    private Map<Product, Integer> products;
 
     public Basket() {
-        id++;
         products = new HashMap<Product, Integer>();
+        iterator = new ProductIterator(products);
     }
 
     public Iterator getIterator() {
-        return new ProductIterator();
+        return new ProductIterator(products);
     }
 
     public void addProduct(Product product, int amount) {
         if (products.containsKey(product)) {
-            products.put(products.get(product) + amount);
+            products.put(product, products.get(product) + amount);
             return;
         }
-        products.put(amount);
+        products.put(product, amount);
     }
 
     public void editProductQuantity(Product product, int amount) {
         if (products.containsKey(product)) {
-            products.put(amount);
+            products.put(product, amount);
         }
     }
 
@@ -43,17 +39,27 @@ public class Basket {
 
     private class ProductIterator implements Iterator {
         private int i;
+        Set<Product> products;
 
-        ProductIterator() {
+        ProductIterator(Map<Product, Integer> products) {
             i = 0;
+            this.products = products.keySet();
         }
 
         public boolean hasNext() {
             return i < products.size();
         }
 
-        public Object next() {
-            return products.get(i++);
+        public Product next() {
+            int j = 0;
+            for(Product product: products) {
+                if(i == j) {
+                    return product;
+                }
+
+                j++;
+            }
+            return null;
         }
 
     }
