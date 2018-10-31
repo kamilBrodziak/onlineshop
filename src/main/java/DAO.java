@@ -5,7 +5,25 @@ import java.io.File;
 import java.lang.*;
 
 public class DAO {
-    
+
+
+    public static void prepareCategories(Map<Integer, Category> categories) {
+        wczytuje wszystkie kategorie
+        idCat = ....
+        name = ....
+        categories.put(idCat, new Category(idCat, name));
+        ....
+
+        wczytuje product
+        idP = ...
+        name = ...
+        price - ...
+
+        Product product = new Product(...)
+        ...
+        categories.get(idProdCateg).addToCategory(product);
+    }
+
     
     public static void printProducts() {
         Connection c = null;

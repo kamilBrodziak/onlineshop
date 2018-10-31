@@ -5,12 +5,12 @@ public class ProductController {
 
     public ProductController() {
         categoryMap = new HashMap<Integer, Category>();
-        DAO dao = new DAO(categoryList);
+        DAO dao = new DAO();
         categoryMap = dao.getCategories();
     }
 
     public List<Category> getCategoryList() {
-        return categoryList;
+        return categoryMap;
     }
 
     public Map<Product, Integer> getProduct() {
