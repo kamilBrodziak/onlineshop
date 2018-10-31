@@ -4,12 +4,12 @@ public class ProductController {
     private Map<Integer, Category> categoryMap;
 
     public ProductController() {
-        categoryMap = new HashMap<Integer, Category>();
+        categoryMap = new HashMap<>();
         DAO dao = new DAO();
         categoryMap = dao.getCategories();
     }
 
-    public List<Category> getCategoryList() {
+    public Map<Integer, Category> getCategoryMap() {
         return categoryMap;
     }
 
@@ -38,7 +38,7 @@ public class ProductController {
 
         chosenCategory = categoryMap.get(idC);
         System.out.println("Products in category "  + chosenCategory.getName() + ":\n\tid\t\tname");
-        for(Product product: chosenCategoryId.getProductList()) {
+        for(Product product: chosenCategory.getProductMap().values()) {
             System.out.println("\t" + product.getId() + "\t\t" + product.getName());
         }
         System.out.println("Invalid category id.");
@@ -58,7 +58,7 @@ public class ProductController {
         }
 
         int amount = -1;
-        Product product = chosenCategory.getProductList.get(idP);
+        Product product = chosenCategory.getProductById(idP);
 
         while(true) {
             String chosenAmount = "";
@@ -81,7 +81,14 @@ public class ProductController {
         Map<Product, Integer> productToBasket = new HashMap<Product, Integer>();
         productToBasket.put(product, amount);
 
+        return productToBasket;
 
     }
+
+    public void putCategory(Category category) {
+        categoryMap.put(category.getId(), category);
+    }
+
+
 
 }

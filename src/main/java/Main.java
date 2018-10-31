@@ -8,6 +8,8 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
+        ProductController productController = new ProductController();
+
         while (true) {
             printMenu();
             
@@ -23,7 +25,9 @@ public class Main {
                     break;
 
                 case 2:
-
+                    int idU = 0;
+                    User user = new User(idU, "alabama", "bamalama", productController);
+                    user.login();
                     break;
 
                 case 3:

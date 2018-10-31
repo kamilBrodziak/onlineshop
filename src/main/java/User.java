@@ -81,7 +81,7 @@ public class User {
         int i = 0;
         System.out.println("id\t\tname\t\tamount");
         while( iterator.hasNext()) {
-            Product product = iterator.next();
+            Product product = (Product)iterator.next();
             System.out.println(++i + "\t\t" + product.getName() + "\t\t" + product.getAmount());
         }
     }
@@ -99,7 +99,7 @@ public class User {
             int i = 0;
             while(iterator.hasNext()) {
                 if ((i + 1 + "").equals(choice)) {
-                    order.removeProduct(iterator.next());
+                    order.removeProduct((Product)iterator.next());
                     break;
                 }
             }
