@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.util.Map;
 import java.util.Scanner;
 import java.math.BigDecimal;
 import java.io.File;
@@ -7,7 +8,33 @@ import java.lang.*;
 public class DAO {
 
 
-    // public static void prepareCategories(Map<Integer, Category> categories) {
+    public static void getCategories() { //Map<Integer, Category> categories
+        
+        Connection c = null;
+        Statement stmt = null;
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:test.db");
+            stmt = c.createStatement();
+            
+            ResultSet rs = stmt.executeQuery( "SELECT category_type_id, name FROM CATEGORIES;" );
+            while ( rs.next() ) {
+                int category_type_id = rs.getInt("category_type_id");
+                String  name = rs.getString("name");
+                System.out.println(category_type_id + " " + name);
+               }
+
+
+            stmt.close();
+            c.close();
+        } catch ( Exception e ) {
+         System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+         System.exit(0);
+        }
+
+
+
     //     wczytuje wszystkie kategorie
     //     idCat = ....
     //     name = ....
@@ -22,7 +49,7 @@ public class DAO {
     //     Product product = new Product(...)
     //     ...
     //     categories.get(idProdCateg).addToCategory(product);
-    // }
+    }
 
     
     public static void printProducts() {

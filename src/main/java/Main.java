@@ -4,11 +4,12 @@ import java.util.*;
 
 public class Main {
     HashMap<String, String> logs = new HashMap<>();
+    Map<Integer, Category> categories = new HashMap<>();
 
 
     public static void main(String[] args) throws Exception {
 
-        ProductController productController = new ProductController();
+        //ProductController productController = new ProductController();
 
         while (true) {
             printMenu();
@@ -25,9 +26,9 @@ public class Main {
                     break;
 
                 case 2:
-                    int idU = 0;
-                    User user = new User(idU, "alabama", "bamalama", productController);
-                    user.login();
+                    //int idU = 0;
+                    //User user = new User(idU, "alabama", "bamalama", productController);
+                    //user.login();
                     break;
 
                 case 3:
@@ -53,6 +54,9 @@ public class Main {
                     System.out.println("Please type in category_id:");
                     int category_id = input.nextInt();
                     DAO.addProduct(name, price, amount, category_id);
+                    break;
+                case 50:
+                    DAO.getCategories();
                     break;
                 
                 case 666: 
