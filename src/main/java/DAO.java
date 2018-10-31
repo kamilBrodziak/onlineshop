@@ -7,22 +7,22 @@ import java.lang.*;
 public class DAO {
 
 
-    public static void prepareCategories(Map<Integer, Category> categories) {
-        wczytuje wszystkie kategorie
-        idCat = ....
-        name = ....
-        categories.put(idCat, new Category(idCat, name));
-        ....
+    // public static void prepareCategories(Map<Integer, Category> categories) {
+    //     wczytuje wszystkie kategorie
+    //     idCat = ....
+    //     name = ....
+    //     categories.put(idCat, new Category(idCat, name));
+    //     ....
 
-        wczytuje product
-        idP = ...
-        name = ...
-        price - ...
+    //     wczytuje product
+    //     idP = ...
+    //     name = ...
+    //     price - ...
 
-        Product product = new Product(...)
-        ...
-        categories.get(idProdCateg).addToCategory(product);
-    }
+    //     Product product = new Product(...)
+    //     ...
+    //     categories.get(idProdCateg).addToCategory(product);
+    // }
 
     
     public static void printProducts() {
@@ -105,6 +105,28 @@ public class DAO {
             System.out.println("Product added successfully");
     }
 
+
+    public static void addCategory(String name, String isAvailable, int category_type_id) {
+        Connection c = null;
+        Statement stmt = null;
+        
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:test.db");
+            c.setAutoCommit(false);
+            stmt = c.createStatement();
+            String sql = "INSERT INTO CATEGORIES (NAME,isAvailable,category_type_id) " + "VALUES ('" + name + "'," + isAvailable + "," + category_type_id + ");" ;
+            stmt.executeUpdate(sql);
+            c.commit();
+            stmt.close();
+            c.close();
+            } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+            }
+            System.out.println("Category added successfully");
+    }
+
     // to nie działa raczej 
     // public void insertProduct(String name, Bigdecimal price, int amount, String isAvailable, int category_id) {
     //     Class.forName("org.sqlite.JDBC");
@@ -184,6 +206,21 @@ public class DAO {
             stmt.executeUpdate(sql10);
             String sql11 = "INSERT INTO PRODUCTS (NAME,PRICE,AMOUNT,isAvailable,category_id) " + "VALUES ('Notepad', 2, 20, 'True', 1);"; 
             stmt.executeUpdate(sql11);
+            addCategory("Office Supplies", "True", 1);
+            addCategory("Fruit", "True", 2);
+            addCategory("Games", "True", 3);
+            int i1 = 1;
+            float f1 = i1;
+            addProduct("Apple", f1, 10, 2 );
+            int i2 = 4;
+            float f2 = i1;
+            addProduct("Pineapple", f2, 5, 2);
+            int i3 = 240;
+            float f3 = i1;
+            addProduct("Red Dead Redemption 2", f3, 5, 3);
+            int i4 = 399;
+            float f4 = i1;
+            addProduct("Half-Life 3", f4, 3, 3);
             stmt.close();
             c.close();
             } catch ( Exception e ) {
