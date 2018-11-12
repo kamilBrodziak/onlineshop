@@ -27,6 +27,7 @@ public class Main {
                     //int idU = 0;
                     //User user = new User(idU, "alabama", "bamalama", productController);
                     //user.login();
+                    userLogin();
                     break;
 
                 case 3:
@@ -62,6 +63,22 @@ public class Main {
                     break;
             }
         }
+    }
+
+    private static void userLogin() {
+        Scanner scanner = new Scanner("System.in");
+        String login = "";
+        String password = "";
+        if(scanner.hasNextLine()) {
+            login = scanner.nextLine();
+        }
+        if(scanner.hasNextLine()) {
+            password = scanner.nextLine();
+        }
+
+
+        User user = DAO.getUser(login, password);
+        user.menu();
     }
 
 

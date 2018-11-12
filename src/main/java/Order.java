@@ -37,6 +37,18 @@ public class Order {
         }
     }
 
+    public void editProductQuantity(String name, int amount) {
+        Iterator iterator = getBasketIterator();
+        while(iterator.hasNext()){
+            Product product= (Product) iterator.next();
+            if(product.getName().equalsIgnoreCase(name)){
+                basket.editProductQuantity(product, amount);
+                return;
+            }
+        }
+        System.out.println("No such product: " + name);
+    }
+
     public Iterator getBasketIterator() {
         return basket.getIterator();
     }

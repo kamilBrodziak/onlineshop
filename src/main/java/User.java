@@ -1,7 +1,7 @@
 import java.util.Iterator;
 import java.util.Scanner;
 
-public class User {
+public abstract class User {
     private int id;
     private String login;
     private String password;
@@ -13,4 +13,10 @@ public class User {
         this.password = password;
         this.productController = productController;
     }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public abstract void menu();
 }

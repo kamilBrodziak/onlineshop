@@ -18,7 +18,7 @@ public class Customer extends User {
         String choose = "";
 
         while(!choose.equals(quitOption) && !choose.equals("1")) {
-            System.out.println("1.Pay\n2.Show basket\n3.Add product\n4.Delete product\n5.Print products\n0.Quit");
+            System.out.println("1.Pay\n2.Show basket\n3.Add product\n4.Delete product\n5.Change product quantity\n6.Print products\n0.Quit");
             if(scanner.hasNextLine()) {
                 choose = scanner.nextLine();
             }
@@ -32,10 +32,14 @@ public class Customer extends User {
                     break;
                 case "3":
                     order.addToBasket(productController.getProduct());
+                    break;
                 case "4":
                     deleteProduct(order);
                     break;
                 case "5":
+                    changeProductQuantinty(order);
+                    break;
+                case "6":
                     DAO.printProducts();
                     break;
                 case "0":
@@ -59,6 +63,7 @@ public class Customer extends User {
         }
     }
 
+    @Override
     public void menu() {
         Scanner scanner = new Scanner(System.in);
         String choice = "0";
@@ -100,5 +105,22 @@ public class Customer extends User {
                 }
             }
         }
+    }
+
+    private void changeProductQuantinty(Order order) {
+        System.out.println("Which product by name do you want do delete?");
+        Scanner scanner = new Scanner(System.in);
+        String name = "";
+        if(scanner.hasNextLine()){
+            name = scanner.nextLine();
+        }
+        System.out.println("Provide new amount");
+        int amount = 0;
+        if(scanner.hasNextInt()) {
+            amount = scanner.nextInt();
+        }
+
+        order.editProductQuantity(name, amount);
+
     }
 }
