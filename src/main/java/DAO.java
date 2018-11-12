@@ -240,7 +240,7 @@ public class DAO {
             c = DriverManager.getConnection("jdbc:sqlite:src/main/resources/test.db");
             c.setAutoCommit(false);
             stmt = c.createStatement();
-            String sql = "INSERT INTO USERS (name,password,user_type_id) " + "VALUES ('" + login + "'," + password + "," + user_type_id + ");" ;
+            String sql = "INSERT INTO USERS (name,password,user_type_id) " + "VALUES ('" + login + "','" + password + "', 2 );" ;
             stmt.executeUpdate(sql);
             c.commit();
             stmt.close();
