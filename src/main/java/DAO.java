@@ -110,7 +110,7 @@ public class DAO {
     }
 
 
-    public static void addProduct(String name, Float price, int amount, int category_id) {
+    public static void addProduct(String name, Float price, int amount, int category_type_id) {
         Connection c = null;
         Statement stmt = null;
         
@@ -119,7 +119,7 @@ public class DAO {
             c = DriverManager.getConnection("jdbc:sqlite:src/main/resources/test.db");
             c.setAutoCommit(false);
             stmt = c.createStatement();
-            String sql = "INSERT INTO PRODUCTS (NAME,PRICE,AMOUNT,isAvailable,category_id) " + "VALUES ('" + name + "'," + price + "," + amount + ", 'True'," + category_id + ");" ;
+            String sql = "INSERT INTO PRODUCTS (NAME,PRICE,AMOUNT,isAvailable,category_type_id) " + "VALUES ('" + name + "'," + price + "," + amount + ", 'True'," + category_type_id + ");" ;
             stmt.executeUpdate(sql);
             c.commit();
             stmt.close();
