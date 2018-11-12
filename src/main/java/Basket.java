@@ -27,6 +27,10 @@ public class Basket {
         }
     }
 
+    public int getAmountOf(Product product) {
+        return products.get(product);
+    }
+
     public void deleteProduct(Product product) {
         if (products.containsKey(product)) {
             products.remove(product);
@@ -54,6 +58,7 @@ public class Basket {
             int j = 0;
             for(Product product: products) {
                 if(i == j) {
+                    i++;
                     return product;
                 }
 

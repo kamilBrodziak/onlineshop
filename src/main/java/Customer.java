@@ -2,8 +2,8 @@ import java.util.Iterator;
 import java.util.Scanner;
 
 public class Customer extends User {
-    public Customer(int id, String login, String password) {
-        super(id, login, password);
+    public Customer(int id, String login, String password, int user_type_id) {
+        super(id, login, password, user_type_id);
     }
 
 
@@ -59,7 +59,7 @@ public class Customer extends User {
         System.out.println("id\t\tname\t\tamount");
         while( iterator.hasNext()) {
             Product product = (Product)iterator.next();
-            System.out.println(++i + "\t\t" + product.getName() + "\t\t" + product.getAmount());
+            System.out.println(++i + "\t\t" + product.getName() + "\t\t" + order.getBasket().getAmount(product));
         }
     }
 
@@ -71,6 +71,7 @@ public class Customer extends User {
             name = scanner.nextLine();
         }
         int amount = 0;
+        System.out.println("Provide amount");
         if(scanner.hasNextInt()) {
             amount = scanner.nextInt();
         }
@@ -80,7 +81,7 @@ public class Customer extends User {
     @Override
     public void menu() {
         Scanner scanner = new Scanner(System.in);
-        String choice = "0";
+        String choice = "-1";
         while(choice != "0") {
             System.out.println("1.Show products\t2.Create new order\t0.Quit");
             if(scanner.hasNextLine()) {

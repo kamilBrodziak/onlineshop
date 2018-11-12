@@ -1,16 +1,16 @@
 import java.util.Scanner;
 
 public class Admin extends User {
-    public Admin(int id, String login, String password) {
-        super(id, login, password);
+    public Admin(int id, String login, String password, int user_type_id) {
+        super(id, login, password, user_type_id);
     }
 
     @Override
     public void menu() {
         Scanner scanner = new Scanner(System.in);
-        String choice = "0";
-        while(choice != "0") {
-            System.out.println("1.Show products\t2.Add product\t3.Delete product\t0.Quit");
+        String choice = "-1";
+        while(!choice.equals("0")) {
+            System.out.println("1.Show products\n2.Add product\n3.Delete product\n0.Quit");
             if(scanner.hasNextLine()) {
                 choice = scanner.nextLine();
             }
@@ -26,7 +26,7 @@ public class Admin extends User {
                     break;
                 case "0":
                     System.out.println("Logout");
-                    return;
+                    break;
                 default:
                     System.out.println("No such option.");
             }

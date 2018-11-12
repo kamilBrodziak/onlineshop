@@ -16,6 +16,10 @@ public class Order {
         this.basket = new Basket();
     }
 
+    public Basket getBasket() {
+        return basket;
+    }
+
     public Boolean pay() {
         BigDecimal cost = new BigDecimal("0.00");
         Iterator iterator = basket.getIterator();

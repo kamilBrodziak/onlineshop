@@ -1,3 +1,5 @@
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
+
 import java.sql.*;
 import java.util.Map;
 import java.util.Scanner;
@@ -198,18 +200,18 @@ public class DAO {
             
             stmt = c.createStatement();
             ResultSet rs = stmt.executeQuery( "SELECT * FROM USERS;" );
+
             while ( rs.next() ) {
                 int id = rs.getInt("id");
-                String  name = rs.getString("name");
-                
+                String name = rs.getString("name");
                 String pass  = rs.getString("password");
                 int user_type_id = rs.getInt("user_type_id");
-                if (name.equals(login)) {
+                if (name.equals(login) && pass.equals(password)) {
                     if (user_type_id == 1) {
-                        Admin admin = new Admin(id, login, pass);
+                        Admin admin = new Admin(id, login, pass, user_type_id);
                         return admin;
                     } else {
-                        Customer customer = new Customer(id, login, pass);
+                        Customer customer = new Customer(id, login, pass, user_type_id);
                         return customer;
                     }
                 }
