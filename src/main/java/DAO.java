@@ -2,6 +2,7 @@ import java.sql.*;
 import java.util.Map;
 import java.io.File;
 import java.lang.*;
+import java.math.BigDecimal;
 
 public class DAO {
 
@@ -153,6 +154,88 @@ public class DAO {
             System.out.println("Category added successfully");
     }
 
+    public static Product getProduct(String product_name) {
+        Product temp = null;
+        Connection c = null;
+        Statement stmt = null;
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:src/main/resources/test.db");
+            
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery( "SELECT * FROM PRODUCTS;" );
+            while ( rs.next() ) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                int price = rs.getInt("price");
+                int amount  = rs.getInt("amount");
+                int category_id = rs.getInt("category_id");
+                if (name.equals(product_name)) {
+                    temp = new Product(id, name, BigDecimal.valueOf(price), amount, category_id);
+                  return temp;  
+                } 
+                // System.out.println( "ID = " + id );
+                // System.out.println( "NAME = " + name );
+                // System.out.println( "PASSWORD = " + pass );
+                // System.out.println( "USER_TYPE_ID = " + user_type_id );
+                // System.out.println();
+               }
+
+            stmt.close();
+            c.close();
+        } catch ( Exception e ) {
+         System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+         System.exit(0);
+        }
+
+
+        return temp;
+    }
+
+
+    public static User getUser(String login, String password) {
+        Connection c = null;
+        Statement stmt = null;
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:src/main/resources/test.db");
+            
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery( "SELECT * FROM USERS;" );
+            while ( rs.next() ) {
+                int id = rs.getInt("id");
+                String  name = rs.getString("name");
+                
+                String pass  = rs.getString("password");
+                int user_type_id = rs.getInt("user_type_id");
+                if (name.equals(login)) {
+                    if (user_type_id == 1) {
+                        Admin admin = new Admin(id, login, pass);
+                        return admin;
+                    } else {
+                        Customer customer = new Customer(id, login, pass);
+                        return customer;
+                    }
+                    
+                }
+                // System.out.println( "ID = " + id );
+                // System.out.println( "NAME = " + name );
+                // System.out.println( "PASSWORD = " + pass );
+                // System.out.println( "USER_TYPE_ID = " + user_type_id );
+                // System.out.println();
+               }
+
+            stmt.close();
+            c.close();
+        } catch ( Exception e ) {
+         System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+         System.exit(0);
+        }
+        return null;
+    }
+
     // to nie działa raczej 
     // public void insertProduct(String name, Bigdecimal price, int amount, String isAvailable, int category_id) {
     //     Class.forName("org.sqlite.JDBC");
@@ -213,6 +296,7 @@ public class DAO {
              String sql7 = "CREATE TABLE `USERS` " +
                 "(`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
                 "`name`	TEXT NOT NULL, " +
+                "`password` TEXT NOT NULL, " +
                 "`user_type_id`	INT NOT NULL) " ;
              String sql8 = "CREATE TABLE `USER_TYPES` " +
                 "(`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
@@ -232,6 +316,17 @@ public class DAO {
             stmt.executeUpdate(sql10);
             String sql11 = "INSERT INTO PRODUCTS (NAME,PRICE,AMOUNT,isAvailable,category_id) " + "VALUES ('Notepad', 2, 20, 'True', 1);"; 
             stmt.executeUpdate(sql11);
+            String sql12 = "INSERT INTO USERS (NAME,PASSWORD,user_type_id) " + "VALUES ('admin', 'admin', 1);"; 
+            stmt.executeUpdate(sql12);
+            String sql13 = "INSERT INTO USER_TYPES (TYPE) " + "VALUES ('admin');"; 
+            stmt.executeUpdate(sql13);
+            String sql14 = "INSERT INTO USER_TYPES (TYPE) " + "VALUES ('user');"; 
+            stmt.executeUpdate(sql14);
+            String sql15 = "INSERT INTO USERS (NAME,PASSWORD,user_type_id) " + "VALUES ('user1', 'password', 2);"; 
+            stmt.executeUpdate(sql15);
+            
+
+
             addCategory("Office Supplies", "True", 1);
             addCategory("Fruit", "True", 2);
             addCategory("Games", "True", 3);

@@ -31,10 +31,8 @@ public class Order {
         return true;
     }
 
-    public void addToBasket(Map<Product, Integer> products) {
-        for(Product singleProduct: products.keySet()) {
-            products.put(singleProduct, products.get(singleProduct));
-        }
+    public void addToBasket(Product product, int amount) {
+        basket.addProduct(product, amount);
     }
 
     public void editProductQuantity(String name, int amount) {

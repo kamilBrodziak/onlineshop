@@ -77,8 +77,8 @@ public class Main {
         }
 
 
-        User user = DAO.getUser(login, password);
-        user.menu();
+        //User user = DAO.getUser(login, password);
+        //user.menu();
     }
 
 

@@ -6,9 +6,9 @@ public class Product {
     private BigDecimal price;
     private int amount;
     private boolean isAvailable;
-    private String category;
+    private int category;
 
-    public Product(int id, String name, BigDecimal price, int amount, String category) {
+    public Product(int id, String name, BigDecimal price, int amount, int category) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -32,7 +32,7 @@ public class Product {
         return amount;
     }
 
-    public String getCategory() {
+    public int getCategory() {
         return category;
     }
 

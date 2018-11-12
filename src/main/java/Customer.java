@@ -2,8 +2,8 @@ import java.util.Iterator;
 import java.util.Scanner;
 
 public class Customer extends User {
-    public Customer(int id, String login, String password, ProductController productController) {
-        super(id, login, password, productController);
+    public Customer(int id, String login, String password) {
+        super(id, login, password);
     }
 
 
@@ -31,7 +31,7 @@ public class Customer extends User {
                     viewBasket(order);
                     break;
                 case "3":
-                    order.addToBasket(productController.getProduct());
+                    addToBasket(order);
                     break;
                 case "4":
                     deleteProduct(order);
@@ -61,6 +61,20 @@ public class Customer extends User {
             Product product = (Product)iterator.next();
             System.out.println(++i + "\t\t" + product.getName() + "\t\t" + product.getAmount());
         }
+    }
+
+    private void addToBasket(Order order) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Provide product name");
+        String name = "";
+        if(scanner.hasNextLine()) {
+            name = scanner.nextLine();
+        }
+        int amount = 0;
+        if(scanner.hasNextInt()) {
+            amount = scanner.nextInt();
+        }
+        order.addToBasket(DAO.getProduct(name), amount);
     }
 
     @Override
