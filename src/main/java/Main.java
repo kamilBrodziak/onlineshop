@@ -9,24 +9,20 @@ public class Main {
         //ProductController productController = new ProductController();
         HashMap<String, String> logs = new HashMap<>();
         Map<Integer, Category> categories = new HashMap<>();
+        Scanner input = new Scanner(System.in);
         while (true) {
             printMenu();
-            
-            Scanner input = new Scanner(System.in);
             int option = input.nextInt();
             switch (option){
                 case 1:
-                try {    
-                    DAO.printProducts();
-                } catch (Exception e) {
-                    System.out.println("Exception e occured. Sad face.");
-                }
+                    try {
+                        DAO.printProducts();
+                    } catch (Exception e) {
+                        System.out.println("Exception e occured. Sad face.");
+                    }
                     break;
 
                 case 2:
-                    //int idU = 0;
-                    //User user = new User(idU, "alabama", "bamalama", productController);
-                    //user.login();
                     userLogin();
                     break;
 
@@ -66,7 +62,7 @@ public class Main {
     }
 
     private static void userLogin() {
-        Scanner scanner = new Scanner("System.in");
+        Scanner scanner = new Scanner(System.in);
         String login = "";
         String password = "";
         if(scanner.hasNextLine()) {
@@ -76,9 +72,13 @@ public class Main {
             password = scanner.nextLine();
         }
 
-
-        //User user = DAO.getUser(login, password);
-        //user.menu();
+        User user = DAO.getUser(login, password);
+        if(user.getType() == 1) {
+            ((Admin)user).menu();
+        } else {
+            ((Customer)user).menu();
+        }
+        user.menu();
     }
 
 
