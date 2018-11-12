@@ -1,7 +1,5 @@
 import java.sql.*;
 import java.util.Map;
-import java.util.Scanner;
-import java.math.BigDecimal;
 import java.io.File;
 import java.lang.*;
 
@@ -15,7 +13,7 @@ public class DAO {
 
         try {
             Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:test.db");
+            c = DriverManager.getConnection("jdbc:sqlite:src/main/resources/test.db");
             stmt = c.createStatement();
             
             ResultSet rs = stmt.executeQuery( "SELECT category_type_id, name FROM CATEGORIES;" );
@@ -59,7 +57,7 @@ public class DAO {
 
         try {
             Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:test.db");
+            c = DriverManager.getConnection("jdbc:sqlite:src/main/resources/test.db");
             
             stmt = c.createStatement();
             ResultSet rs = stmt.executeQuery( "SELECT * FROM PRODUCTS;" );
@@ -96,7 +94,7 @@ public class DAO {
         
         try {
             Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:test.db");
+            c = DriverManager.getConnection("jdbc:sqlite:src/main/resources/test.db");
             c.setAutoCommit(false);
             stmt = c.createStatement();
             String sql = "DELETE from PRODUCTS where ID=" + id + ";";
@@ -118,7 +116,7 @@ public class DAO {
         
         try {
             Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:test.db");
+            c = DriverManager.getConnection("jdbc:sqlite:src/main/resources/test.db");
             c.setAutoCommit(false);
             stmt = c.createStatement();
             String sql = "INSERT INTO PRODUCTS (NAME,PRICE,AMOUNT,isAvailable,category_id) " + "VALUES ('" + name + "'," + price + "," + amount + ", 'True'," + category_id + ");" ;
@@ -140,7 +138,7 @@ public class DAO {
         
         try {
             Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:test.db");
+            c = DriverManager.getConnection("jdbc:sqlite:src/main/resources/test.db");
             c.setAutoCommit(false);
             stmt = c.createStatement();
             String sql = "INSERT INTO CATEGORIES (NAME,isAvailable,category_type_id) " + "VALUES ('" + name + "'," + isAvailable + "," + category_type_id + ");" ;
@@ -168,7 +166,7 @@ public class DAO {
     
 
     public static void restoreDatabase() {
-        File file = new File("test.db");
+        File file = new File("src/main/resources/test.db");
         if(file.delete()){
             System.out.println("test.db File deleted");
         } else System.out.println("File test.db doesn't exists");  
@@ -178,7 +176,7 @@ public class DAO {
       
         try {
             Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:test.db");
+            c = DriverManager.getConnection("jdbc:sqlite:src/main/resources/test.db");
             System.out.println("Opened database successfully");
              stmt = c.createStatement();
             String sql = "CREATE TABLE `CATEGORIES`" +
