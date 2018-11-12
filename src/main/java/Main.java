@@ -31,6 +31,8 @@ public class Main {
                     break;
 
                 case 3:
+                    //register
+                    DAO.register();
                     break;
 
                 case 4:

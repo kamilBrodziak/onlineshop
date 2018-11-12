@@ -1,5 +1,6 @@
 import java.sql.*;
 import java.util.Map;
+import java.util.Scanner;
 import java.io.File;
 import java.lang.*;
 import java.math.BigDecimal;
@@ -223,10 +224,15 @@ public class DAO {
     }
 
 
-    public static void register(String login, String password, int user_type_id) { //id 1 for admin , 2 for user
+    public static void register() { //id 1 for admin , 2 for user
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Please type in your login:");
+        String login = scanner.nextLine();
+        System.out.println("Please type in your password:");
+        String password = scanner.nextLine();
+        
         Connection c = null;
         Statement stmt = null;
-        
         try {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:src/main/resources/test.db");
