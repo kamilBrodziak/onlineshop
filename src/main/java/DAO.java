@@ -154,6 +154,7 @@ public class DAO {
             System.out.println("Category added successfully");
     }
 
+    
     public static Product getProduct(String product_name) {
         Product temp = null;
         Connection c = null;
@@ -175,21 +176,13 @@ public class DAO {
                     temp = new Product(id, name, BigDecimal.valueOf(price), amount, category_id);
                   return temp;  
                 } 
-                // System.out.println( "ID = " + id );
-                // System.out.println( "NAME = " + name );
-                // System.out.println( "PASSWORD = " + pass );
-                // System.out.println( "USER_TYPE_ID = " + user_type_id );
-                // System.out.println();
-               }
-
+            }
             stmt.close();
             c.close();
         } catch ( Exception e ) {
          System.err.println( e.getClass().getName() + ": " + e.getMessage() );
          System.exit(0);
         }
-
-
         return temp;
     }
 
@@ -218,15 +211,8 @@ public class DAO {
                         Customer customer = new Customer(id, login, pass);
                         return customer;
                     }
-                    
                 }
-                // System.out.println( "ID = " + id );
-                // System.out.println( "NAME = " + name );
-                // System.out.println( "PASSWORD = " + pass );
-                // System.out.println( "USER_TYPE_ID = " + user_type_id );
-                // System.out.println();
-               }
-
+            }
             stmt.close();
             c.close();
         } catch ( Exception e ) {
@@ -236,16 +222,28 @@ public class DAO {
         return null;
     }
 
-    // to nie działa raczej 
-    // public void insertProduct(String name, Bigdecimal price, int amount, String isAvailable, int category_id) {
-    //     Class.forName("org.sqlite.JDBC");
-    //     c = DriverManager.getConnection("jdbc:sqlite:test.db");
-    //     System.out.println("Opened database successfully");
-    //     stmt = c.createStatement();
-                
-    //     String sql = "INSERT INTO PRODUCTS (NAME,PRICE,AMOUNT,isAvailable,category_id) " + "VALUES (" + name + "," + price + "," + amount + "," + isAvailable + "," + category_id + " );"; 
-    //     stmt.executeUpdate(sql);
-    // }
+
+    public static void register(String login, String password, int user_type_id) { //id 1 for admin , 2 for user
+        Connection c = null;
+        Statement stmt = null;
+        
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:src/main/resources/test.db");
+            c.setAutoCommit(false);
+            stmt = c.createStatement();
+            String sql = "INSERT INTO USERS (name,password,user_type_id) " + "VALUES ('" + login + "'," + password + "," + user_type_id + ");" ;
+            stmt.executeUpdate(sql);
+            c.commit();
+            stmt.close();
+            c.close();
+            } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.exit(0);
+            }
+            System.out.println("User added successfully");
+
+    }
     
 
     public static void restoreDatabase() {
