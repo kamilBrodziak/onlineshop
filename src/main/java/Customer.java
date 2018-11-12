@@ -1,3 +1,4 @@
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class Customer extends User {
@@ -17,7 +18,7 @@ public class Customer extends User {
         String choose = "";
 
         while(!choose.equals(quitOption) && !choose.equals("1")) {
-            System.out.println("1.Pay\n2.Show basket\n3.Add product\n4.Delete product\n0.Quit");
+            System.out.println("1.Pay\n2.Show basket\n3.Add product\n4.Delete product\n5.Print products\n0.Quit");
             if(scanner.hasNextLine()) {
                 choose = scanner.nextLine();
             }
@@ -34,6 +35,9 @@ public class Customer extends User {
                 case "4":
                     deleteProduct(order);
                     break;
+                case "5":
+                    DAO.printProducts();
+                    break;
                 case "0":
                     return;
                 default:
@@ -44,7 +48,18 @@ public class Customer extends User {
 
     }
 
-    public void login() {
+    private void viewBasket(Order order) {
+        System.out.println("Your basket:");
+        Iterator iterator = order.getBasketIterator();
+        int i = 0;
+        System.out.println("id\t\tname\t\tamount");
+        while( iterator.hasNext()) {
+            Product product = (Product)iterator.next();
+            System.out.println(++i + "\t\t" + product.getName() + "\t\t" + product.getAmount());
+        }
+    }
+
+    public void menu() {
         Scanner scanner = new Scanner(System.in);
         String choice = "0";
         while(choice != "0") {
@@ -63,6 +78,26 @@ public class Customer extends User {
                     return;
                 default:
                     System.out.println("No such option.");
+            }
+        }
+    }
+
+    private void deleteProduct(Order order) {
+        System.out.println("Which product do you want to delete?");
+        Scanner scanner = new Scanner(System.in);
+        String choice = "as";
+        if(scanner.hasNextLine()) {
+            choice = scanner.nextLine();
+        }
+
+        if(choice.matches("[0-9]")) {
+            Iterator iterator = order.getBasketIterator();
+            int i = 0;
+            while(iterator.hasNext()) {
+                if ((i + 1 + "").equals(choice)) {
+                    order.removeProduct((Product)iterator.next());
+                    break;
+                }
             }
         }
     }
