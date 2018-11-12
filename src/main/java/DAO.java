@@ -8,7 +8,7 @@ import java.lang.*;
 public class DAO {
 
 
-    public static void getCategories() { //Map<Integer, Category> categories
+    public static Map<Integer, Category> getCategories(Map<Integer, Category> categories) { //
         
         Connection c = null;
         Statement stmt = null;
@@ -23,7 +23,8 @@ public class DAO {
                 int category_type_id = rs.getInt("category_type_id");
                 String  name = rs.getString("name");
                 System.out.println(category_type_id + " " + name);
-               }
+                categories.put(category_type_id, new Category(category_type_id, name));
+            }
 
 
             stmt.close();
@@ -33,7 +34,7 @@ public class DAO {
          System.exit(0);
         }
 
-
+        return categories;
 
     //     wczytuje wszystkie kategorie
     //     idCat = ....

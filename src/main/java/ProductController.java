@@ -6,7 +6,7 @@ public class ProductController {
     public ProductController() {
         categoryMap = new HashMap<>();
         DAO dao = new DAO();
-        categoryMap = dao.getCategories();
+        categoryMap = dao.getCategories(categoryMap);
     }
 
     public Map<Integer, Category> getCategoryMap() {
@@ -38,7 +38,7 @@ public class ProductController {
 
         chosenCategory = categoryMap.get(idC);
         System.out.println("Products in category "  + chosenCategory.getName() + ":\n\tid\t\tname");
-        for(Product product: chosenCategory.getProductMap().values()) {
+        for(Product product: chosenCategory.getProductMap().keySet()) {
             System.out.println("\t" + product.getId() + "\t\t" + product.getName());
         }
         System.out.println("Invalid category id.");

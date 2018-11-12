@@ -3,14 +3,12 @@ import java.util.*;
 
 
 public class Main {
-    HashMap<String, String> logs = new HashMap<>();
-    Map<Integer, Category> categories = new HashMap<>();
-
 
     public static void main(String[] args) throws Exception {
 
         //ProductController productController = new ProductController();
-
+        HashMap<String, String> logs = new HashMap<>();
+        Map<Integer, Category> categories = new HashMap<>();
         while (true) {
             printMenu();
             
@@ -56,7 +54,7 @@ public class Main {
                     DAO.addProduct(name, price, amount, category_id);
                     break;
                 case 50:
-                    DAO.getCategories();
+                    DAO.getCategories(categories);
                     break;
                 
                 case 666: 
