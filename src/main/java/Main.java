@@ -9,6 +9,7 @@ public class Main {
         HashMap<String, String> logs = new HashMap<>();
         Map<Integer, Category> categories = new HashMap<>();
         Scanner input = new Scanner(System.in);
+        System.out.println("\033\143");
         while (true) {
             printMenu();
             int option = input.nextInt();
@@ -22,6 +23,7 @@ public class Main {
                     break;
 
                 case 2:
+                    System.out.println("\033\143");
                     userLogin();
                     break;
 
@@ -45,11 +47,13 @@ public class Main {
 
     private static void userLogin() {
         Scanner scanner = new Scanner(System.in);
+        System.out.println("Please enter login: \n");
         String login = "";
         String password = "";
         if(scanner.hasNextLine()) {
             login = scanner.nextLine();
         }
+        System.out.println("Please enter password: \n");
         if(scanner.hasNextLine()) {
             password = scanner.nextLine();
         }
