@@ -73,7 +73,6 @@ public class Customer extends User {
     }
 
     private void viewBasket(Order order) {
-<<<<<<< HEAD
         System.out.println("Your basket:");
         Iterator iterator = order.getBasketIterator();
         int i = 0;
