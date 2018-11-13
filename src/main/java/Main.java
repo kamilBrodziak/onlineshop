@@ -26,6 +26,7 @@ public class Main {
                     break;
 
                 case 3:
+                    DAO.register();
                     break;
 
                 case 4:
