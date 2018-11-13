@@ -11,13 +11,14 @@ public class Customer extends User {
         Order order = new Order();
 
         Scanner scanner = new Scanner(System.in);
-
+        System.out.println("\033\143");
         System.out.println("New order creator.");
 
         String quitOption = "0";
         String choose = "";
 
         while(!choose.equals(quitOption) && !choose.equals("1")) {
+            System.out.println("\033\143");
             System.out.println("1.Pay\n2.Show basket\n3.Add product\n4.Delete product\n5.Change product quantity\n6.Print products\n0.Quit");
             if(scanner.hasNextLine()) {
                 choose = scanner.nextLine();
@@ -28,7 +29,16 @@ public class Customer extends User {
                     order.pay();
                     break;
                 case "2":
-                    viewBasket(order);
+                    int isRunning = 1;
+                    while (isRunning == 1) {
+                        System.out.println("\033\143");
+                        viewBasket(order);
+                        System.out.println("(0) Back");
+                        int goBack = scanner.nextInt();
+                        if (goBack == 0){
+                            isRunning = 0;
+                        }
+                    }
                     break;
                 case "3":
                     try {
@@ -39,12 +49,17 @@ public class Customer extends User {
                     addToBasket(order);
                     break;
                 case "4":
+                    System.out.println("\033\143");
+                    viewBasket(order);
                     deleteProduct(order);
                     break;
                 case "5":
+                    System.out.println("\033\143");
+                    viewBasket(order);
                     changeProductQuantinty(order);
                     break;
                 case "6":
+                    System.out.println("\033\143");
                     DAO.printProducts();
                     break;
                 case "0":
@@ -58,15 +73,17 @@ public class Customer extends User {
     }
 
     private void viewBasket(Order order) {
-        System.out.println("Your basket:");
-        Iterator iterator = order.getBasketIterator();
-        int i = 0;
-        System.out.println("id\t\tname\t\tamount");
-        while( iterator.hasNext()) {
-            Product product = (Product)iterator.next();
-            System.out.println(++i + "\t\t" + product.getName() + "\t\t" + order.getBasket().getAmount(product));
+
+            System.out.println("Your basket:");
+            Iterator iterator = order.getBasketIterator();
+            int i = 0;
+            System.out.println("id\t\tname\t\tamount");
+            while (iterator.hasNext()) {
+                Product product = (Product) iterator.next();
+                System.out.println(++i + "\t\t" + product.getName() + "\t\t" + order.getBasket().getAmount(product));
+            }
+
         }
-    }
 
     private void addToBasket(Order order) {
         Scanner scanner = new Scanner(System.in);
@@ -87,11 +104,12 @@ public class Customer extends User {
 
     @Override
     public void menu() {
+        System.out.println("\033\143");
         Scanner scanner = new Scanner(System.in);
         String choice = "-1";
         System.out.println("\033\143" + "LOGIN AS " + super.getLogin());
         while(!choice.equals("0")) {
-            System.out.println("1.Show products\n2.Create new order\n0.Quit");
+            System.out.println("(1) Show products\n(2) Create new order\n(0) Quit");
             if(scanner.hasNextLine()) {
                 choice = scanner.nextLine();
             }
