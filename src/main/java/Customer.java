@@ -31,6 +31,11 @@ public class Customer extends User {
                     viewBasket(order);
                     break;
                 case "3":
+                    try {
+                        DAO.printProducts();
+                    } catch (Exception e) {
+                        System.out.println("Exception e occured. Sad face.");
+                    }
                     addToBasket(order);
                     break;
                 case "4":
@@ -75,7 +80,9 @@ public class Customer extends User {
         if(scanner.hasNextInt()) {
             amount = scanner.nextInt();
         }
-        order.addToBasket(DAO.getProduct(name), amount);
+        if(DAO.getProduct(name) != null) {
+            order.addToBasket(DAO.getProduct(name), amount);
+        }
     }
 
     @Override
@@ -83,12 +90,17 @@ public class Customer extends User {
         Scanner scanner = new Scanner(System.in);
         String choice = "-1";
         while(choice != "0") {
-            System.out.println("1.Show products\t2.Create new order\t0.Quit");
+            System.out.println("1.Show products\n2.Create new order\n0.Quit");
             if(scanner.hasNextLine()) {
                 choice = scanner.nextLine();
             }
             switch (choice) {
                 case "1":
+                    try {
+                        DAO.printProducts();
+                    } catch (Exception e) {
+                        System.out.println("Exception e occured. Sad face.");
+                    }
                     break;
                 case "2":
                     createNewOrder();
@@ -114,9 +126,11 @@ public class Customer extends User {
             Iterator iterator = order.getBasketIterator();
             int i = 0;
             while(iterator.hasNext()) {
-                if ((i + 1 + "").equals(choice)) {
+                if ((++i + "").equals(choice)) {
                     order.removeProduct((Product)iterator.next());
                     break;
+                } else {
+                    iterator.next();
                 }
             }
         }

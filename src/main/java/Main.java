@@ -6,10 +6,10 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        //ProductController productController = new ProductController();
         HashMap<String, String> logs = new HashMap<>();
         Map<Integer, Category> categories = new HashMap<>();
         Scanner input = new Scanner(System.in);
+        System.out.println("\033\143");
         while (true) {
             printMenu();
             int option = input.nextInt();
@@ -23,6 +23,7 @@ public class Main {
                     break;
 
                 case 2:
+                    System.out.println("\033\143");
                     userLogin();
                     break;
 
@@ -32,24 +33,6 @@ public class Main {
 
                 case 4:
                     System.exit(0);
-                    break;
-                
-                case 5:
-                    System.out.println("Which id to delete?");    
-                    int id = input.nextInt();   
-                    DAO.deleteProduct(id);
-                    break;
-                
-                case 6:
-                    System.out.println("Please type in the name of the product:");
-                    String name = input.next();
-                    System.out.println("Please type in the price:");
-                    float price = input.nextFloat();
-                    System.out.println("Please type in the amount:");
-                    int amount = input.nextInt();
-                    System.out.println("Please type in category_id:");
-                    int category_id = input.nextInt();
-                    DAO.addProduct(name, price, amount, category_id);
                     break;
                 case 50:
                     DAO.getCategories(categories);
@@ -64,16 +47,22 @@ public class Main {
 
     private static void userLogin() {
         Scanner scanner = new Scanner(System.in);
+        System.out.println("Please enter login: \n");
         String login = "";
         String password = "";
         if(scanner.hasNextLine()) {
             login = scanner.nextLine();
         }
+        System.out.println("Please enter password: \n");
         if(scanner.hasNextLine()) {
             password = scanner.nextLine();
         }
 
         User user = DAO.getUser(login, password);
+        if (user == null) {
+            System.out.println("INVALID USERNAME OR PASSWORD");
+            return;
+        }
         if(user.getType() == 1) {
             ((Admin)user).menu();
         } else {
@@ -88,8 +77,6 @@ public class Main {
         System.out.println("(2) Log in");
         System.out.println("(3) Register");
         System.out.println("(4) Exit");
-        System.out.println("(5) Delete Product");
-        System.out.println("(6) Add Product");
     }
 
 
