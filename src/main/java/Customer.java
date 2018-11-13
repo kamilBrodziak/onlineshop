@@ -80,7 +80,9 @@ public class Customer extends User {
         if(scanner.hasNextInt()) {
             amount = scanner.nextInt();
         }
-        order.addToBasket(DAO.getProduct(name), amount);
+        if(DAO.getProduct(name) != null) {
+            order.addToBasket(DAO.getProduct(name), amount);
+        }
     }
 
     @Override
@@ -124,9 +126,11 @@ public class Customer extends User {
             Iterator iterator = order.getBasketIterator();
             int i = 0;
             while(iterator.hasNext()) {
-                if ((i + 1 + "").equals(choice)) {
+                if ((++i + "").equals(choice)) {
                     order.removeProduct((Product)iterator.next());
                     break;
+                } else {
+                    iterator.next();
                 }
             }
         }

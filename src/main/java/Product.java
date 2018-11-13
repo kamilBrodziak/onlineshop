@@ -49,4 +49,7 @@ public class Product {
     }
 
 
+    public boolean equals(Product obj) {
+        return id == obj.getId();
+    }
 }
