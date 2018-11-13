@@ -16,9 +16,13 @@ public class Basket {
     public void addProduct(Product product, int amount) {
         if (products.containsKey(product)) {
             products.put(product, products.get(product) + amount);
-            return;
+        } else {
+            products.put(product, amount);
         }
-        products.put(product, amount);
+
+        if(products.get(product) <= 0) {
+            deleteProduct(product);
+        }
     }
 
     public void editProductQuantity(Product product, int amount) {
@@ -68,4 +72,5 @@ public class Basket {
         }
 
     }
+
 }
