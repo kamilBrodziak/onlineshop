@@ -107,7 +107,7 @@ public class Customer extends User {
         System.out.println("\033\143");
         Scanner scanner = new Scanner(System.in);
         String choice = "-1";
-        while(choice != "0") {
+        while(!choice.equals("0")) {
             System.out.println("(1) Show products\n(2) Create new order\n(0) Quit");
             if(scanner.hasNextLine()) {
                 choice = scanner.nextLine();

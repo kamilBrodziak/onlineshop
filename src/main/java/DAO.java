@@ -254,6 +254,44 @@ public class DAO {
     }
     
 
+    public static void editProduct() {
+        System.out.println("Which product id to edit?");
+        Scanner scanner = new Scanner(System.in);
+        int inputID = scanner.nextInt();
+        System.out.println("What do you want to edit? [Name / Price / Amount]  ");
+        String inputColumn = scanner.nextLine();
+
+        Connection c = null;
+        Statement stmt = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:src/main/resources/test.db");
+            stmt = c.createStatement();
+            if (inputColumn.equals("Name")) {
+                System.out.println("Please type in new name:");
+                String newName = scanner.nextLine();
+                ResultSet rs = stmt.executeQuery( "UPDATE PRODUCTS SET NAME = " + newName +"' WHERE ID = " + inputID + ");");
+            }
+            if (inputColumn.equals("Price")) {
+                System.out.println("Please type in new price:");
+                int newPrice = scanner.nextInt();
+                ResultSet rs = stmt.executeQuery( "UPDATE PRODUCTS SET PRICE = " + newPrice +"' WHERE ID = " + inputID + ");");
+            }
+            if (inputColumn.equals("Amount")) {
+                System.out.println("Please type in new amount:");
+                int newAmount = scanner.nextInt();
+                ResultSet rs = stmt.executeQuery( "UPDATE PRODUCTS SET AMOUNT = " + newAmount +"' WHERE ID = " + inputID + ");");
+            }
+            stmt.close();
+            c.close();
+        } catch ( Exception e ) {
+         System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+         System.exit(0);
+        }
+    }
+
+    
+
     public static void restoreDatabase() {
         File file = new File("src/main/resources/test.db");
         if(file.delete()){
