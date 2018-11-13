@@ -89,6 +89,7 @@ public class Customer extends User {
     public void menu() {
         Scanner scanner = new Scanner(System.in);
         String choice = "-1";
+        System.out.println("\033\143" + "LOGIN AS " + super.getLogin());
         while(!choice.equals("0")) {
             System.out.println("1.Show products\n2.Create new order\n0.Quit");
             if(scanner.hasNextLine()) {
@@ -96,6 +97,7 @@ public class Customer extends User {
             }
             switch (choice) {
                 case "1":
+                    System.out.println("\033\143");
                     try {
                         DAO.printProducts();
                     } catch (Exception e) {
@@ -103,19 +105,22 @@ public class Customer extends User {
                     }
                     break;
                 case "2":
+                    System.out.println("\033\143");
                     createNewOrder();
                     break;
                 case "0":
+                    System.out.println("\033\143");
                     System.out.println("Logout");
                     return;
                 default:
+                    System.out.println("\033\143");
                     System.out.println("No such option.");
             }
         }
     }
 
     private void deleteProduct(Order order) {
-        System.out.println("Which product do you want to delete?");
+        System.out.println("Which product by name do you want to delete?");
         Scanner scanner = new Scanner(System.in);
         String choice = "as";
         if(scanner.hasNextLine()) {
@@ -137,7 +142,7 @@ public class Customer extends User {
     }
 
     private void changeProductQuantinty(Order order) {
-        System.out.println("Which product by name do you want do delete?");
+        System.out.println("Which product by name do you want do change?");
         Scanner scanner = new Scanner(System.in);
         String name = "";
         if(scanner.hasNextLine()){

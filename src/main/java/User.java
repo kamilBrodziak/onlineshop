@@ -18,6 +18,10 @@ public abstract class User {
         return password;
     }
 
+    public String getLogin() {
+        return login;
+    }
+
     public int getType() {
         return user_type_id;
     }

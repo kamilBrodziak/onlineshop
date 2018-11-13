@@ -28,6 +28,7 @@ public class Main {
                 case 2:
                     System.out.println("\033\143");
                     userLogin();
+                    option = -1;
                     break;
 
                 case 3:

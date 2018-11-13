@@ -5,7 +5,7 @@ public class Basket {
     private Map<Product, Integer> products;
 
     public Basket() {
-        products = new HashMap<Product, Integer>();
+        products = new HashMap<>();
         iterator = new ProductIterator(products);
     }
 
@@ -14,20 +14,28 @@ public class Basket {
     }
 
     public void addProduct(Product product, int amount) {
-        if (products.containsKey(product)) {
-            products.put(product, products.get(product) + amount);
+        if(product.getAmount() >= amount) {
+            if (products.containsKey(product)) {
+                products.put(product, products.get(product) + amount);
+            } else {
+                products.put(product, amount);
+            }
+            product.setAmount(product.getAmount() - amount);
+            if(products.get(product) <= 0) {
+                deleteProduct(product);
+            }
         } else {
-            products.put(product, amount);
+            System.out.println("Too low amount, you want " + amount + ", there is only " + product.getAmount() + " in stock");
         }
 
-        if(products.get(product) <= 0) {
-            deleteProduct(product);
-        }
     }
 
     public void editProductQuantity(Product product, int amount) {
         if (products.containsKey(product)) {
-            products.put(product, amount);
+            product.setAmount(product.getAmount() + products.get(product));
+            if(amount <= product.getAmount()) {
+                products.put(product, amount);
+            }
         }
     }
 
@@ -37,6 +45,7 @@ public class Basket {
 
     public void deleteProduct(Product product) {
         if (products.containsKey(product)) {
+            product.setAmount(product.getAmount() + products.get(product));
             products.remove(product);
         }
     }
