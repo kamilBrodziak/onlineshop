@@ -14,7 +14,7 @@ public class Basket {
     }
 
     public void addProduct(Product product, int amount) {
-        if(product.getAmount() >= amount) {
+        if(amount >= 0 && product.getAmount() >= amount) {
             if (products.containsKey(product)) {
                 products.put(product, products.get(product) + amount);
             } else {
@@ -33,8 +33,10 @@ public class Basket {
     public void editProductQuantity(Product product, int amount) {
         if (products.containsKey(product)) {
             product.setAmount(product.getAmount() + products.get(product));
-            if(amount <= product.getAmount()) {
+            if(amount > 0 && amount <= product.getAmount()) {
                 products.put(product, amount);
+            } else if (amount < 1) {
+                deleteProduct(product);
             }
         }
     }
