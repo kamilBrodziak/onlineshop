@@ -83,7 +83,7 @@ public class Customer extends User {
         Scanner scanner = new Scanner(System.in);
         String choice = "-1";
         while(choice != "0") {
-            System.out.println("1.Show products\t2.Create new order\t0.Quit");
+            System.out.println("1.Show products\n2.Create new order\n0.Quit");
             if(scanner.hasNextLine()) {
                 choice = scanner.nextLine();
             }
