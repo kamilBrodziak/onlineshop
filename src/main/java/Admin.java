@@ -10,7 +10,7 @@ public class Admin extends User {
         Scanner scanner = new Scanner(System.in);
         String choice = "-1";
         while(!choice.equals("0")) {
-            System.out.println("1.Show products\n2.Add product\n3.Delete product\n0.Quit");
+            System.out.println("1.Show products\n2.Add product\n3.Delete product\n6.Edit Product\n0.Quit");
             if(scanner.hasNextLine()) {
                 choice = scanner.nextLine();
             }
@@ -23,6 +23,9 @@ public class Admin extends User {
                     break;
                 case "3":
                     deleteProduct();
+                    break;
+                case "6":
+                    DAO.editProduct();
                     break;
                 case "0":
                     System.out.println("Logout");

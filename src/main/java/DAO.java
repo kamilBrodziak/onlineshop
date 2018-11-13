@@ -35,23 +35,7 @@ public class DAO {
          System.err.println( e.getClass().getName() + ": " + e.getMessage() );
          System.exit(0);
         }
-
         return categories;
-
-    //     wczytuje wszystkie kategorie
-    //     idCat = ....
-    //     name = ....
-    //     categories.put(idCat, new Category(idCat, name));
-    //     ....
-
-    //     wczytuje product
-    //     idP = ...
-    //     name = ...
-    //     price - ...
-
-    //     Product product = new Product(...)
-    //     ...
-    //     categories.get(idProdCateg).addToCategory(product);
     }
 
     
@@ -209,9 +193,13 @@ public class DAO {
                 if (name.equals(login) && pass.equals(password)) {
                     if (user_type_id == 1) {
                         Admin admin = new Admin(id, login, pass, user_type_id);
+                        stmt.close();
+                        c.close();
                         return admin;
                     } else {
                         Customer customer = new Customer(id, login, pass, user_type_id);
+                        stmt.close();
+                        c.close();
                         return customer;
                     }
                 }
@@ -258,30 +246,39 @@ public class DAO {
         System.out.println("Which product id to edit?");
         Scanner scanner = new Scanner(System.in);
         int inputID = scanner.nextInt();
-        System.out.println("What do you want to edit? [Name / Price / Amount]  ");
+        System.out.println("What do you want to edit? [Name / Price / Amount] only Name works now ");
+        
         String inputColumn = scanner.nextLine();
+        if (scanner.hasNextLine() ) {
+            inputColumn = scanner.nextLine();
+            inputColumn = inputColumn.toUpperCase();
+        }
 
         Connection c = null;
         Statement stmt = null;
         try {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:src/main/resources/test.db");
-            stmt = c.createStatement();
-            if (inputColumn.equals("Name")) {
+            c.setAutoCommit(false);
+            
+            if (inputColumn.equals("NAME")) {
                 System.out.println("Please type in new name:");
                 String newName = scanner.nextLine();
-                ResultSet rs = stmt.executeQuery( "UPDATE PRODUCTS SET NAME = " + newName +"' WHERE ID = " + inputID + ");");
+                stmt = c.createStatement();
+                String sql = "UPDATE PRODUCTS SET NAME = '" + newName + "' WHERE ID = " + inputID + ";";
+                stmt.executeUpdate(sql);
+                c.commit();
+                System.out.println("sql executed");
+
             }
-            if (inputColumn.equals("Price")) {
-                System.out.println("Please type in new price:");
-                int newPrice = scanner.nextInt();
-                ResultSet rs = stmt.executeQuery( "UPDATE PRODUCTS SET PRICE = " + newPrice +"' WHERE ID = " + inputID + ");");
-            }
-            if (inputColumn.equals("Amount")) {
-                System.out.println("Please type in new amount:");
-                int newAmount = scanner.nextInt();
-                ResultSet rs = stmt.executeQuery( "UPDATE PRODUCTS SET AMOUNT = " + newAmount +"' WHERE ID = " + inputID + ");");
-            }
+            // if (inputColumn.equals("PRICE")) {
+            //     System.out.println("Please type in new price:");
+            //     int newPrice = scanner.nextInt();
+            // }
+            // if (inputColumn.equals("AMOUNT")) {
+            //     System.out.println("Please type in new amount:");
+            //     int newAmount = scanner.nextInt();
+            // }
             stmt.close();
             c.close();
         } catch ( Exception e ) {
