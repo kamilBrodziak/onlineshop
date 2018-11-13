@@ -31,6 +31,11 @@ public class Customer extends User {
                     viewBasket(order);
                     break;
                 case "3":
+                    try {
+                        DAO.printProducts();
+                    } catch (Exception e) {
+                        System.out.println("Exception e occured. Sad face.");
+                    }
                     addToBasket(order);
                     break;
                 case "4":
@@ -91,6 +96,11 @@ public class Customer extends User {
             }
             switch (choice) {
                 case "1":
+                    try {
+                        DAO.printProducts();
+                    } catch (Exception e) {
+                        System.out.println("Exception e occured. Sad face.");
+                    }
                     break;
                 case "2":
                     createNewOrder();
