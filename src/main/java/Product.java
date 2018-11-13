@@ -49,7 +49,13 @@ public class Product {
     }
 
 
-    public boolean equals(Product obj) {
-        return id == obj.getId();
+    @Override
+    public boolean equals(Object obj) {
+        return this.id == ((Product)obj).getId();
+    }
+
+    @Override
+    public int hashCode() {
+        return this.id;
     }
 }

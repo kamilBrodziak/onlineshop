@@ -10,9 +10,12 @@ public class Main {
         Map<Integer, Category> categories = new HashMap<>();
         Scanner input = new Scanner(System.in);
         System.out.println("\033\143");
+        int option = 0;
         while (true) {
             printMenu();
-            int option = input.nextInt();
+            if(input.hasNextInt()) {
+                option = input.nextInt();
+            }
             switch (option){
                 case 1:
                     try {
@@ -25,6 +28,7 @@ public class Main {
                 case 2:
                     System.out.println("\033\143");
                     userLogin();
+                    option = -1;
                     break;
 
                 case 3:
@@ -68,7 +72,6 @@ public class Main {
         } else {
             ((Customer)user).menu();
         }
-        user.menu();
     }
 
 
