@@ -159,7 +159,7 @@ public class DAO {
                 int price = rs.getInt("price");
                 int amount  = rs.getInt("amount");
                 int category_id = rs.getInt("category_id");
-                if (name.equals(product_name)) {
+                if (name.equalsIgnoreCase(product_name)) {
                     temp = new Product(id, name, BigDecimal.valueOf(price), amount, category_id);
                   return temp;  
                 } 
