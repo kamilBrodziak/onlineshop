@@ -1,4 +1,3 @@
-import java.math.BigDecimal;
 import java.util.*;
 
 
@@ -106,14 +105,3 @@ public class Main {
         }
     }
 }
-
-    //    public static void loginSystem(HashMap<String, Integer> logs){
-//        Scanner input = new Scanner(System.in);
-//        System.out.println("Enter login: \n");
-//        String login = input.nextLine();
-//        if (logs.containsValue(login)){
-//            System.out.println("Enter password: \n");
-//            String password = input.nextLine();
-//            if ()
-//        }
-//    }

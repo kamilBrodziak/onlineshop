@@ -1,5 +1,3 @@
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
-
 import java.sql.*;
 import java.util.Map;
 import java.util.Scanner;
@@ -177,8 +175,7 @@ public class DAO {
                 int category_id = rs.getInt("category_id");
                 if (name.equalsIgnoreCase(product_name)) {
                     temp = new Product(id, name, BigDecimal.valueOf(price), amount, category_id);
-                  return temp;  
-                } 
+                }
             }
             stmt.close();
             c.close();

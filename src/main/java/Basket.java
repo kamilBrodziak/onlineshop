@@ -21,9 +21,6 @@ public class Basket {
                 products.put(product, amount);
             }
             product.setAmount(product.getAmount() - amount);
-            if(products.get(product) <= 0) {
-                deleteProduct(product);
-            }
         } else {
             System.out.println("Too low amount, you want " + amount + ", there is only " + product.getAmount() + " in stock");
         }
@@ -35,14 +32,11 @@ public class Basket {
             product.setAmount(product.getAmount() + products.get(product));
             if(amount > 0 && amount <= product.getAmount()) {
                 products.put(product, amount);
+                product.setAmount(product.getAmount() - amount);
             } else if (amount < 1) {
                 deleteProduct(product);
             }
         }
-    }
-
-    public int getAmountOf(Product product) {
-        return products.get(product);
     }
 
     public void deleteProduct(Product product) {
@@ -53,7 +47,11 @@ public class Basket {
     }
 
     public int getAmount(Product product) {
-        return products.get(product);
+        if(products.containsKey(product)) {
+            return products.get(product);
+        } else {
+            return 0;
+        }
     }
 
     private class ProductIterator implements Iterator {
