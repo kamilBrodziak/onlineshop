@@ -40,7 +40,6 @@ public class Main {
                 case 50:
                     DAO.getCategories(categories);
                     break;
-                
                 case 666: 
                     DAO.restoreDatabase();
                     break;
@@ -96,6 +95,7 @@ public class Main {
         System.out.println("(3) Remove product");
         System.out.println("(4) Set feature category");
         System.out.println("(5) Ban user! ;) ");
+        System.out.println("(6) Edit Product");
     }
 
     public static void printProducts() {

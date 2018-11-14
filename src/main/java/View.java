@@ -47,7 +47,7 @@ public class View {
         Scanner scanner = new Scanner(System.in);
         String choice = "-1";
         while(!choice.equals("0")) {
-            System.out.println("1.Show products\n2.Add product\n3.Delete product\n0.Quit");
+            System.out.println("1.Show products\n2.Add product\n3.Delete product\n6.Edit Product\n0.Quit");
             if(scanner.hasNextLine()) {
                 choice = scanner.nextLine();
             }
@@ -56,10 +56,13 @@ public class View {
                     DAO.printProducts();
                     break;
                 case "2":
-                    admin.addProduct(View.getNewProductParameters());
+                    admin.addProduct(getNewProductParameters());
                     break;
                 case "3":
-                    admin.deleteProduct(View.getIdProductToDelete());
+                    admin.deleteProduct(getIdProductToDelete());
+                    break;
+                case "6":
+                    DAO.editProduct();
                     break;
                 case "0":
                     System.out.println("Logout");
