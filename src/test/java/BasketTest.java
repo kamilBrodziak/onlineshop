@@ -5,12 +5,11 @@ import java.math.BigDecimal;
 import java.util.Iterator;
 
 class BasketTest {
-    private static Basket basket;
+    private Basket basket;
 
-    @BeforeAll
-    public static void setUp() {
+    @BeforeEach
+    public void setBasket() {
         basket = new Basket();
-
     }
 
 
@@ -76,7 +75,14 @@ class BasketTest {
 
     @Test
     public void testBasketIterator() {
+        Product product = new Product(999, "dupa", BigDecimal.valueOf(99.99), 12, 2);
+        basket.addProduct(product, 12);
+        Product product2 = new Product(9999, "dupa2", BigDecimal.valueOf(99.99), 12, 2);
+        basket.addProduct(product2, 2);
         Iterator iterator = basket.getIterator();
+
+
+        assertEquals(product, iterator.next(), "Product return by iterator");
 
         while(iterator.hasNext()) {
             assertEquals(Product.class, iterator.next().getClass(), "Object type returned by basket iterator");

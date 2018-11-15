@@ -1,7 +1,9 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class View {
+    private static DAO dao = new DAO();
 
     public static ArrayList<String> getNewProductParameters() {
         ArrayList<String> productParams = new ArrayList<>();
@@ -53,7 +55,7 @@ public class View {
             }
             switch (choice) {
                 case "1":
-                    DAO.printProducts();
+                    dao.printProducts();
                     break;
                 case "2":
                     admin.addProduct(getNewProductParameters());
@@ -62,7 +64,7 @@ public class View {
                     admin.deleteProduct(getIdProductToDelete());
                     break;
                 case "6":
-                    DAO.editProduct();
+                    dao.editProduct();
                     break;
                 case "0":
                     System.out.println("Logout");
@@ -70,6 +72,131 @@ public class View {
                 default:
                     System.out.println("No such option.");
             }
+        }
+    }
+
+    public static void showBasket(Order order) {
+        System.out.println("Your basket:");
+        Iterator iterator = order.getBasketIterator();
+        int i = 0;
+        String leftAlignFormat = "|  %-4d | %-20s |  %-6d  |%n";
+
+        System.out.format("+-------+----------------------+----------+%n");
+        System.out.format("|  ID   |  Name                |  Amount  |%n");
+        System.out.format("+-------+----------------------+----------+%n");
+        while( iterator.hasNext()) {
+            Product product = (Product)iterator.next();
+            System.out.format(leftAlignFormat, ++i, product.getName(), order.getBasket().getAmount(product));
+        }
+        System.out.format("+-------+----------------------+----------+%n");
+    }
+
+    public static String[] getProductInput() {
+        String[] input = new String[2];
+        Scanner scanner = new Scanner(System.in);
+        input[0] = getProductName();
+
+        System.out.println("Provide amount");
+        if(scanner.hasNextLine()) {
+            input[1] = scanner.nextLine();
+        }
+
+        return input;
+    }
+
+    public static String getProductName() {
+        Scanner scanner = new Scanner(System.in);
+
+        String name = "";
+        System.out.println("Provide product name");
+        if(scanner.hasNextLine()) {
+            name = scanner.nextLine();
+        }
+        return name;
+    }
+
+    public static void customerMenu(Customer customer) {
+        Scanner scanner = new Scanner(System.in);
+        String choice = "-1";
+        System.out.println("\033\143" + "LOGIN AS " + customer.getLogin());
+        while(!choice.equals("0")) {
+            System.out.println("(1) Show products\n(2) Create new order\n(0) Quit");
+            if(scanner.hasNextLine()) {
+                choice = scanner.nextLine();
+            }
+            switch (choice) {
+                case "1":
+                    System.out.println("\033\143");
+                    dao.printProducts();
+                    break;
+                case "2":
+                    System.out.println("\033\143");
+                    customer.createNewOrder();
+                    break;
+                case "0":
+                    System.out.println("\033\143");
+                    System.out.println("Logout");
+                    return;
+                default:
+                    System.out.println("\033\143No such option");
+            }
+        }
+    }
+
+    public static void orderMenu(Customer customer, Order order) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("\033\143");
+        System.out.println("New order creator.");
+
+        String quitOption = "0";
+        String choose = "";
+
+        while(!choose.equals(quitOption) && !choose.equals("1")) {
+            System.out.println("1.Pay\n2.Show basket\n3.Add product\n4.Delete product\n5.Change product quantity\n6.Print products\n0.Quit");
+            if(scanner.hasNextLine()) {
+                choose = scanner.nextLine();
+            }
+
+            switch(choose) {
+                case "1":
+                    order.pay();
+                    break;
+                case "2":
+                    int isRunning = 1;
+                    while (isRunning == 1) {
+                        System.out.println("\033\143");
+                        View.showBasket(order);
+                        System.out.println("(0) Back");
+                        int goBack = scanner.nextInt();
+                        if (goBack == 0){
+                            isRunning = 0;
+                        }
+                    }
+                    break;
+                case "3":
+                    dao.printProducts();
+                    order.addToBasket(View.getProductInput());
+                    break;
+                case "4":
+                    System.out.println("\033\143");
+                    View.showBasket(order);
+                    order.deleteProduct(View.getProductName());
+                    break;
+                case "5":
+                    System.out.println("\033\143");
+                    View.showBasket(order);
+                    order.changeProductQuantinty(View.getProductInput());
+                    break;
+                case "6":
+                    System.out.println("\033\143");
+                    dao.printProducts();
+                    break;
+                case "0":
+                    return;
+                default:
+                    System.out.println("No such option.");
+            }
+
         }
     }
 }

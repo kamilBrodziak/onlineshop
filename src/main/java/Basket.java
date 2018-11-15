@@ -56,28 +56,19 @@ public class Basket {
 
     private class ProductIterator implements Iterator {
         private int i;
-        Set<Product> products;
+        Product[] products;
 
         ProductIterator(Map<Product, Integer> products) {
             i = 0;
-            this.products = products.keySet();
+            this.products = products.keySet().toArray(new Product[products.size()]);
         }
 
         public boolean hasNext() {
-            return i < products.size();
+            return i < products.length;
         }
 
         public Product next() {
-            int j = 0;
-            for(Product product: products) {
-                if(i == j) {
-                    i++;
-                    return product;
-                }
-
-                j++;
-            }
-            return null;
+            return products[i++];
         }
 
     }

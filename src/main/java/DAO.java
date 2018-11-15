@@ -6,46 +6,53 @@ import java.lang.*;
 import java.math.BigDecimal;
 
 public class DAO {
+    private Connection c;
+    private Statement stmt;
 
+    public DAO() {
+        c = null;
+        stmt = null;
 
-    public static Map<Integer, Category> getCategories(Map<Integer, Category> categories) { //
-        
-        Connection c = null;
-        Statement stmt = null;
-
-        try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:src/main/resources/test.db");
-            stmt = c.createStatement();
-            
-            ResultSet rs = stmt.executeQuery( "SELECT category_type_id, name FROM CATEGORIES;" );
-            while ( rs.next() ) {
-                int category_type_id = rs.getInt("category_type_id");
-                String  name = rs.getString("name");
-                System.out.println(category_type_id + " " + name);
-                categories.put(category_type_id, new Category(category_type_id, name));
-            }
-
-
-            stmt.close();
-            c.close();
-        } catch ( Exception e ) {
-         System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-         System.exit(0);
-        }
-        return categories;
     }
 
-    
-    public static void printProducts() {
-        Connection c = null;
-        Statement stmt = null;
+    private void connect() throws Exception{
+        Class.forName("org.sqlite.JDBC");
+        c = DriverManager.getConnection("jdbc:sqlite:src/main/resources/test.db");
+        stmt = c.createStatement();
+    }
 
+    private void disconnect() {
         try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:src/main/resources/test.db");
-            
-            stmt = c.createStatement();
+            stmt.close();
+            c.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+//    public Map<Integer, Category> getCategories(Map<Integer, Category> categories) { //
+//        try {
+//            connect();
+//            ResultSet rs = stmt.executeQuery( "SELECT category_type_id, name FROM CATEGORIES;" );
+//            while ( rs.next() ) {
+//                int category_type_id = rs.getInt("category_type_id");
+//                String  name = rs.getString("name");
+//                System.out.println(category_type_id + " " + name);
+//                categories.put(category_type_id, new Category(category_type_id, name));
+//            }
+//
+//        } catch ( Exception e ) {
+//         System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+//        }
+//        disconnect();
+//        return categories;
+//    }
+
+    
+    public void printProducts() {
+        try {
+            connect();
             ResultSet rs = stmt.executeQuery( "SELECT * FROM PRODUCTS;" );
             while ( rs.next() ) {
                 int id = rs.getInt("id");
@@ -62,94 +69,69 @@ public class DAO {
                 //System.out.println( "isAvailable = " + isAvailable );
                 System.out.println( "category_id =" + category_id);
                 System.out.println();
-               }
-
-            stmt.close();
-            c.close();
+            }
+            disconnect();
         } catch ( Exception e ) {
-         System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-         System.exit(0);
+             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+             System.exit(0);
         }
     }
 
 
 
-    public static void deleteProduct(int id) {
-        Connection c = null;
-        Statement stmt = null;
-        
+    public void deleteProduct(int id) {
         try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:src/main/resources/test.db");
+            connect();
             c.setAutoCommit(false);
-            stmt = c.createStatement();
             String sql = "DELETE from PRODUCTS where ID=" + id + ";";
             stmt.executeUpdate(sql);
             c.commit();
-            stmt.close();
-            c.close();
-            } catch ( Exception e ) {
+            System.out.println("Product deleted successfully");
+            disconnect();
+        } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             System.exit(0);
-            }
-            System.out.println("Product deleted successfully");
+        }
     }
 
 
-    public static void addProduct(String name, Float price, int amount, int category_id) {
-        Connection c = null;
-        Statement stmt = null;
-        
+    public void addProduct(String name, Float price, int amount, int category_id) {
         try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:src/main/resources/test.db");
+            connect();
             c.setAutoCommit(false);
-            stmt = c.createStatement();
             String sql = "INSERT INTO PRODUCTS (NAME,PRICE,AMOUNT,isAvailable,category_id) " + "VALUES ('" + name + "'," + price + "," + amount + ", 'True'," + category_id + ");" ;
             stmt.executeUpdate(sql);
             c.commit();
-            stmt.close();
-            c.close();
-            } catch ( Exception e ) {
+            System.out.println("Product added successfully");
+            disconnect();
+        } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             System.exit(0);
-            }
-            System.out.println("Product added successfully");
+        }
     }
 
 
-    public static void addCategory(String name, String isAvailable, int category_type_id) {
-        Connection c = null;
-        Statement stmt = null;
-        
+    public void addCategory(String name, String isAvailable, int category_type_id) {
         try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:src/main/resources/test.db");
+            connect();
             c.setAutoCommit(false);
-            stmt = c.createStatement();
             String sql = "INSERT INTO CATEGORIES (NAME,isAvailable,category_type_id) " + "VALUES ('" + name + "'," + isAvailable + "," + category_type_id + ");" ;
             stmt.executeUpdate(sql);
             c.commit();
-            stmt.close();
-            c.close();
-            } catch ( Exception e ) {
+            disconnect();
+            System.out.println("Category added successfully");
+        } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             System.exit(0);
-            }
-            System.out.println("Category added successfully");
+        }
     }
 
     
-    public static Product getProduct(String product_name) {
+    public  Product getProduct(String product_name) {
         Product temp = null;
-        Connection c = null;
-        Statement stmt = null;
 
         try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:src/main/resources/test.db");
-            
-            stmt = c.createStatement();
+            connect();
             ResultSet rs = stmt.executeQuery( "SELECT * FROM PRODUCTS;" );
             while ( rs.next() ) {
                 int id = rs.getInt("id");
@@ -161,8 +143,7 @@ public class DAO {
                     temp = new Product(id, name, BigDecimal.valueOf(price), amount, category_id);
                 }
             }
-            stmt.close();
-            c.close();
+            disconnect();
         } catch ( Exception e ) {
          System.err.println( e.getClass().getName() + ": " + e.getMessage() );
          System.exit(0);
@@ -171,15 +152,10 @@ public class DAO {
     }
 
 
-    public static User getUser(String login, String password) {
-        Connection c = null;
-        Statement stmt = null;
+    public User getUser(String login, String password) {
 
         try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:src/main/resources/test.db");
-            
-            stmt = c.createStatement();
+            connect();
             ResultSet rs = stmt.executeQuery( "SELECT * FROM USERS;" );
 
             while ( rs.next() ) {
@@ -190,19 +166,14 @@ public class DAO {
                 if (name.equals(login) && pass.equals(password)) {
                     if (user_type_id == 1) {
                         Admin admin = new Admin(id, login, pass, user_type_id);
-                        stmt.close();
-                        c.close();
                         return admin;
                     } else {
                         Customer customer = new Customer(id, login, pass, user_type_id);
-                        stmt.close();
-                        c.close();
                         return customer;
                     }
                 }
             }
-            stmt.close();
-            c.close();
+            disconnect();
         } catch ( Exception e ) {
          System.err.println( e.getClass().getName() + ": " + e.getMessage() );
          System.exit(0);
@@ -211,35 +182,30 @@ public class DAO {
     }
 
 
-    public static void register() { //id 1 for admin , 2 for user
+    public void register() { //id 1 for admin , 2 for user
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please type in your login:");
         String login = scanner.nextLine();
         System.out.println("Please type in your password:");
         String password = scanner.nextLine();
-        
-        Connection c = null;
-        Statement stmt = null;
+
         try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:src/main/resources/test.db");
+            connect();
             c.setAutoCommit(false);
-            stmt = c.createStatement();
             String sql = "INSERT INTO USERS (name,password,user_type_id) " + "VALUES ('" + login + "','" + password + "', 2 );" ;
             stmt.executeUpdate(sql);
             c.commit();
-            stmt.close();
-            c.close();
-            } catch ( Exception e ) {
+            disconnect();
+        } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             System.exit(0);
-            }
-            System.out.println("User added successfully");
+        }
+        System.out.println("User added successfully");
 
     }
     
 
-    public static void editProduct(){
+    public void editProduct(){
         System.out.println("Which product id to edit?");
         Scanner scanner = new Scanner(System.in);
         int inputID = scanner.nextInt();
@@ -251,11 +217,8 @@ public class DAO {
             inputColumn = inputColumn.toUpperCase();
         }
 
-        Connection c = null;
-        Statement stmt = null;
         try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:src/main/resources/test.db");
+            connect();
             c.setAutoCommit(false);
             
             if (inputColumn.equals("NAME")) {
@@ -276,8 +239,7 @@ public class DAO {
             //     System.out.println("Please type in new amount:");
             //     int newAmount = scanner.nextInt();
             // }
-            stmt.close();
-            c.close();
+            disconnect();
         } catch ( Exception e ) {
          System.err.println( e.getClass().getName() + ": " + e.getMessage() );
          System.exit(0);
@@ -286,14 +248,11 @@ public class DAO {
 
     
 
-    public static void restoreDatabase() {
+    public void restoreDatabase() {
         File file = new File("src/main/resources/test.db");
         if(file.delete()){
             System.out.println("test.db File deleted");
-        } else System.out.println("File test.db doesn't exists");  
-    
-        Connection c = null;
-        Statement stmt = null; 
+        } else System.out.println("File test.db doesn't exists");
       
         try {
             Class.forName("org.sqlite.JDBC");
