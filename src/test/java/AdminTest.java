@@ -2,14 +2,15 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 class AdminTest {
     private static Admin admin;
+    private static DAO dao;
 
     @BeforeAll
     public static void setUp() {
         admin = new Admin(1, "ll", "[[", 1);
+        dao = new DAO();
 
     }
 
@@ -27,9 +28,9 @@ class AdminTest {
 
         admin.addProduct(testProductParams);
 
-        assertNotNull(DAO.getProduct("dupa"), "Product add to database check");
+        assertNotNull(dao.getProduct("dupa"), "Product add to database check");
         System.out.println("Adding product to database test passed");
-        admin.deleteProduct(DAO.getProduct("dupa").getId());
+        admin.deleteProduct(dao.getProduct("dupa").getId());
 
     }
 
@@ -42,9 +43,9 @@ class AdminTest {
         testProductParams.add("1");
         admin.addProduct(testProductParams);
 
-        admin.deleteProduct(DAO.getProduct("dupa").getId());
+        admin.deleteProduct(dao.getProduct("dupa").getId());
 
-        assertNull(DAO.getProduct("dupa"), "Product delete from database check");
+        assertNull(dao.getProduct("dupa"), "Product delete from database check");
         System.out.println("Deleting product from database test passed");
     }
 

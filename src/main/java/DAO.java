@@ -12,7 +12,6 @@ public class DAO {
     public DAO() {
         c = null;
         stmt = null;
-
     }
 
     private void connect() throws Exception{
@@ -29,25 +28,6 @@ public class DAO {
             e.printStackTrace();
         }
     }
-
-
-//    public Map<Integer, Category> getCategories(Map<Integer, Category> categories) { //
-//        try {
-//            connect();
-//            ResultSet rs = stmt.executeQuery( "SELECT category_type_id, name FROM CATEGORIES;" );
-//            while ( rs.next() ) {
-//                int category_type_id = rs.getInt("category_type_id");
-//                String  name = rs.getString("name");
-//                System.out.println(category_type_id + " " + name);
-//                categories.put(category_type_id, new Category(category_type_id, name));
-//            }
-//
-//        } catch ( Exception e ) {
-//         System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-//        }
-//        disconnect();
-//        return categories;
-//    }
 
     
     public void printProducts() {
@@ -166,9 +146,11 @@ public class DAO {
                 if (name.equals(login) && pass.equals(password)) {
                     if (user_type_id == 1) {
                         Admin admin = new Admin(id, login, pass, user_type_id);
+                        disconnect();
                         return admin;
                     } else {
                         Customer customer = new Customer(id, login, pass, user_type_id);
+                        disconnect();
                         return customer;
                     }
                 }
@@ -252,13 +234,13 @@ public class DAO {
         File file = new File("src/main/resources/test.db");
         if(file.delete()){
             System.out.println("test.db File deleted");
-        } else System.out.println("File test.db doesn't exists");
+        } else {
+            System.out.println("File test.db doesn't exists");
+        }
       
         try {
-            Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:src/main/resources/test.db");
+            connect();
             System.out.println("Opened database successfully");
-             stmt = c.createStatement();
             String sql = "CREATE TABLE `CATEGORIES`" +
                 "( `id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
                 "`name`	TEXT NOT NULL, " +
@@ -339,12 +321,10 @@ public class DAO {
             int i4 = 399;
             float f4 = i1;
             addProduct("Half-Life 3", f4, 3, 3);
-            stmt.close();
-            c.close();
-            } catch ( Exception e ) {
+        } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             System.exit(0);
-            }
+        }
     }
 
 }

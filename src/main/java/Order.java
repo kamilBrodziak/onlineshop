@@ -1,7 +1,6 @@
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.Map;
 
 public class Order {
     private static int id;
@@ -27,7 +26,7 @@ public class Order {
 
         while(iterator.hasNext()) {
             Product currProduct = (Product)iterator.next();
-            cost = BigDecimal.valueOf(currProduct.getAmount() * currProduct.getPrice().doubleValue());
+            cost = cost.add(BigDecimal.valueOf(currProduct.getAmount() * currProduct.getPrice().doubleValue()));
         }
 
 

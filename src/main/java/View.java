@@ -199,4 +199,26 @@ public class View {
 
         }
     }
+
+    public static String[] getUserLog() {
+        String[] logParam = new String[2];
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("\033\143Please enter login: \n");
+        if(scanner.hasNextLine()) {
+            logParam[0] = scanner.nextLine();
+        }
+        System.out.println("Please enter password: \n");
+        if(scanner.hasNextLine()) {
+            logParam[1] = scanner.nextLine();
+        }
+        return logParam;
+    }
+
+    public static void printMainMenu() {
+        System.out.println("(1) Show all products");
+        System.out.println("(2) Log in");
+        System.out.println("(3) Register");
+        System.out.println("(0) Exit");
+    }
 }
