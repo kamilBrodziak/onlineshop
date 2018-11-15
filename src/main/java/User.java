@@ -1,6 +1,3 @@
-import java.util.Iterator;
-import java.util.Scanner;
-
 public abstract class User {
     private int id;
     private String login;

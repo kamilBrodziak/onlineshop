@@ -15,13 +15,13 @@ public class MainController {
             }
             switch (option){
                 case 1:
-                    dao.printProducts();
+                    View.printTable(dao.getProductList());
                     break;
                 case 2:
                     userLogin();
                     break;
                 case 3:
-                    dao.register();
+                    View.registerUser();
                     break;
                 case 0:
                     System.exit(0);

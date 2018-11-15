@@ -1,5 +1,6 @@
 import java.sql.*;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.io.File;
 import java.lang.*;
@@ -14,47 +15,39 @@ public class DAO {
         stmt = null;
     }
 
-    private void connect() throws Exception{
+    public void connect() throws Exception{
         Class.forName("org.sqlite.JDBC");
         c = DriverManager.getConnection("jdbc:sqlite:src/main/resources/test.db");
         stmt = c.createStatement();
     }
 
-    private void disconnect() {
-        try {
-            stmt.close();
-            c.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void disconnect() throws Exception {
+        stmt.close();
+        c.close();
     }
 
     
-    public void printProducts() {
+    public List<String> getProductList() {
         try {
             connect();
             ResultSet rs = stmt.executeQuery( "SELECT * FROM PRODUCTS;" );
+            List<String> products = new ArrayList<>();
             while ( rs.next() ) {
-                int id = rs.getInt("id");
+                String id = rs.getInt("id") + "";
                 String  name = rs.getString("name");
-                float price  = rs.getFloat("Price");
+                String price  = rs.getFloat("Price") + "";
                 String  amount = rs.getString("amount");
-                //boolean isAvailable = rs.getBoolean("isAvailable");
-                int category_id = rs.getInt("category_id");
-                
-                System.out.println( "ID = " + id );
-                System.out.println( "NAME = " + name );
-                System.out.println( "PRICE = " + price );
-                System.out.println( "AMOUNT = " + amount );
-                //System.out.println( "isAvailable = " + isAvailable );
-                System.out.println( "category_id =" + category_id);
-                System.out.println();
+                String category_id = rs.getInt("category_id") + "";
+
+                products.add(id + "\t" + name + "\t" + price + "\t" + amount + "\t" + category_id);
             }
             disconnect();
+            return products;
         } catch ( Exception e ) {
              System.err.println( e.getClass().getName() + ": " + e.getMessage() );
              System.exit(0);
         }
+        return null;
     }
 
 
@@ -91,20 +84,20 @@ public class DAO {
     }
 
 
-    public void addCategory(String name, String isAvailable, int category_type_id) {
-        try {
-            connect();
-            c.setAutoCommit(false);
-            String sql = "INSERT INTO CATEGORIES (NAME,isAvailable,category_type_id) " + "VALUES ('" + name + "'," + isAvailable + "," + category_type_id + ");" ;
-            stmt.executeUpdate(sql);
-            c.commit();
-            disconnect();
-            System.out.println("Category added successfully");
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
-        }
-    }
+//    public void addCategory(String name, String isAvailable, int category_type_id) {
+//        try {
+//            connect();
+//            c.setAutoCommit(false);
+//            String sql = "INSERT INTO CATEGORIES (NAME,isAvailable,category_type_id) " + "VALUES ('" + name + "'," + isAvailable + "," + category_type_id + ");" ;
+//            stmt.executeUpdate(sql);
+//            c.commit();
+//            disconnect();
+//            System.out.println("Category added successfully");
+//        } catch ( Exception e ) {
+//            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+//            System.exit(0);
+//        }
+//    }
 
     
     public  Product getProduct(String product_name) {
@@ -157,19 +150,15 @@ public class DAO {
             }
             disconnect();
         } catch ( Exception e ) {
-         System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-         System.exit(0);
+             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+             System.exit(0);
         }
         return null;
     }
 
 
-    public void register() { //id 1 for admin , 2 for user
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Please type in your login:");
-        String login = scanner.nextLine();
-        System.out.println("Please type in your password:");
-        String password = scanner.nextLine();
+    public void register(String login, String password) { //id 1 for admin , 2 for user
+
 
         try {
             connect();
@@ -188,31 +177,31 @@ public class DAO {
     
 
     public void editProduct(){
-        System.out.println("Which product id to edit?");
-        Scanner scanner = new Scanner(System.in);
-        int inputID = scanner.nextInt();
-        System.out.println("What do you want to edit? [Name / Price / Amount] only Name works now ");
-        
-        String inputColumn = scanner.nextLine();
-        if (scanner.hasNextLine() ) {
-            inputColumn = scanner.nextLine();
-            inputColumn = inputColumn.toUpperCase();
-        }
+//        System.out.println("Which product id to edit?");
+//        Scanner scanner = new Scanner(System.in);
+//        int inputID = scanner.nextInt();
+//        System.out.println("What do you want to edit? [Name / Price / Amount] only Name works now ");
+//
+//        String inputColumn = scanner.nextLine();
+//        if (scanner.hasNextLine() ) {
+//            inputColumn = scanner.nextLine();
+//            inputColumn = inputColumn.toUpperCase();
+//        }
+//
+//        try {
+//            connect();
+//            c.setAutoCommit(false);
+//
+//            if (inputColumn.equals("NAME")) {
+//                System.out.println("Please type in new name:");
+//                String newName = scanner.nextLine();
+//                stmt = c.createStatement();
+//                String sql = "UPDATE PRODUCTS SET NAME = '" + newName + "' WHERE ID = " + inputID + ";";
+//                stmt.executeUpdate(sql);
+//                c.commit();
+//                System.out.println("sql executed");
 
-        try {
-            connect();
-            c.setAutoCommit(false);
-            
-            if (inputColumn.equals("NAME")) {
-                System.out.println("Please type in new name:");
-                String newName = scanner.nextLine();
-                stmt = c.createStatement();
-                String sql = "UPDATE PRODUCTS SET NAME = '" + newName + "' WHERE ID = " + inputID + ";";
-                stmt.executeUpdate(sql);
-                c.commit();
-                System.out.println("sql executed");
-
-            }
+//            }
             // if (inputColumn.equals("PRICE")) {
             //     System.out.println("Please type in new price:");
             //     int newPrice = scanner.nextInt();
@@ -221,11 +210,11 @@ public class DAO {
             //     System.out.println("Please type in new amount:");
             //     int newAmount = scanner.nextInt();
             // }
-            disconnect();
-        } catch ( Exception e ) {
-         System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-         System.exit(0);
-        }
+//            disconnect();
+//        } catch ( Exception e ) {
+//         System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+//         System.exit(0);
+//        }
     }
 
     
@@ -306,9 +295,9 @@ public class DAO {
             
 
 
-            addCategory("Office Supplies", "True", 1);
-            addCategory("Fruit", "True", 2);
-            addCategory("Games", "True", 3);
+//            addCategory("Office Supplies", "True", 1);
+//            addCategory("Fruit", "True", 2);
+//            addCategory("Games", "True", 3);
             int i1 = 1;
             float f1 = i1;
             addProduct("Apple", f1, 10, 2 );

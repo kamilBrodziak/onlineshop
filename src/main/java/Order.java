@@ -20,32 +20,31 @@ public class Order {
         return basket;
     }
 
-    public Boolean pay() {
+    public BigDecimal pay() {
         BigDecimal cost = new BigDecimal("0.00");
         Iterator iterator = basket.getIterator();
 
         while(iterator.hasNext()) {
             Product currProduct = (Product)iterator.next();
-            cost = cost.add(BigDecimal.valueOf(currProduct.getAmount() * currProduct.getPrice().doubleValue()));
+            cost = cost.add(BigDecimal.valueOf(Math.round(((double)basket.getAmount(currProduct)) * currProduct.getPrice().doubleValue() * 100d) / 100d));
         }
 
-
-        System.out.println("Your order cost: " + cost);
-        System.out.println("13 1140 2004 0000 3702 7657 6565, send it and then we will send you your order.");
-        return true;
+        return cost.setScale(1);
     }
 
-    public void addToBasket(String[] productParam) {
+    public boolean addToBasket(String[] productParam) {
         if(!productParam[1].matches("[0-9]*")) {
             System.out.println("Invalid amount");
-            return;
+            return false;
         }
 
         if(dao.getProduct(productParam[0]) != null) {
             basket.addProduct(dao.getProduct(productParam[0]), Integer.parseInt(productParam[1]));
+            return true;
         } else {
             System.out.println("There is no such product.");
         }
+        return false;
     }
 
 
@@ -60,17 +59,15 @@ public class Order {
             if (product.getName().equalsIgnoreCase(choice)) {
                 basket.deleteProduct(product);
                 break;
-            } else {
-                iterator.next();
             }
         }
 
     }
 
-    public void changeProductQuantinty(String[] productParam) {
+    public boolean changeProductQuantinty(String[] productParam) {
         if(!productParam[1].matches("[0-9]*")) {
             System.out.println("Invalid amount");
-            return;
+            return false;
         }
 
         Iterator iterator = getBasketIterator();
@@ -78,11 +75,11 @@ public class Order {
             Product product= (Product) iterator.next();
             if(product.getName().equalsIgnoreCase(productParam[0])){
                 basket.editProductQuantity(product, Integer.parseInt(productParam[1]));
-                return;
+                return true;
             }
         }
         System.out.println("No such product: " + productParam[0]);
-
+        return false;
     }
 
 }

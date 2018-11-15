@@ -32,20 +32,9 @@ public class Product {
         return amount;
     }
 
-    public int getCategory() {
-        return category;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
 
     public void setAmount(int amount) {
         this.amount = amount;
-    }
-
-    public String toString(){
-        return "Name: " + name + " |  Price: " + price.toString()+ " |  Amount: " + amount + " |  Available: " + isAvailable + " |  Category: " + category;
     }
 
 

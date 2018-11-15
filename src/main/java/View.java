@@ -1,5 +1,7 @@
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Scanner;
 
 public class View {
@@ -55,7 +57,7 @@ public class View {
             }
             switch (choice) {
                 case "1":
-                    dao.printProducts();
+                    printTable(dao.getProductList());
                     break;
                 case "2":
                     admin.addProduct(getNewProductParameters());
@@ -127,7 +129,7 @@ public class View {
             switch (choice) {
                 case "1":
                     System.out.println("\033\143");
-                    dao.printProducts();
+                    printTable(dao.getProductList());
                     break;
                 case "2":
                     System.out.println("\033\143");
@@ -159,7 +161,7 @@ public class View {
 
             switch(choose) {
                 case "1":
-                    order.pay();
+                    printCost(order.pay());
                     break;
                 case "2":
                     int isRunning = 1;
@@ -174,7 +176,7 @@ public class View {
                     }
                     break;
                 case "3":
-                    dao.printProducts();
+                    printTable(dao.getProductList());
                     order.addToBasket(View.getProductInput());
                     break;
                 case "4":
@@ -189,7 +191,7 @@ public class View {
                     break;
                 case "6":
                     System.out.println("\033\143");
-                    dao.printProducts();
+                    printTable(dao.getProductList());
                     break;
                 case "0":
                     return;
@@ -220,5 +222,27 @@ public class View {
         System.out.println("(2) Log in");
         System.out.println("(3) Register");
         System.out.println("(0) Exit");
+    }
+
+    public static void printCost(BigDecimal cost) {
+        System.out.println("Your order cost: " + cost);
+        System.out.println("13 1140 2004 0000 3702 7657 6565, send it and then we will send you your order.");
+    }
+
+    public static void printTable(List<String> stringList) {
+        System.out.println("id\tname\tprice\tamount\tcategory_id");
+        for(String row: stringList) {
+            System.out.println(row);
+        }
+    }
+
+    public static void registerUser() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Please type in your login:");
+        String login = scanner.nextLine();
+        System.out.println("Please type in your password:");
+        String password = scanner.nextLine();
+
+        dao.register(login, password);
     }
 }
