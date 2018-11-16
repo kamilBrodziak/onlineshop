@@ -38,14 +38,10 @@ public class MainController {
         User user = dao.getUser(logParam[0], logParam[1]);
         if (user == null) {
             System.out.println("INVALID USERNAME OR PASSWORD");
-            return;
-        }
-        if(user.getType() == 1) {
+        } else if(user.getType() == 1) {
             ((Admin)user).menu();
         } else {
             ((Customer)user).menu();
         }
     }
-
-
 }

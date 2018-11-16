@@ -1,7 +1,6 @@
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.io.File;
 import java.lang.*;
 import java.math.BigDecimal;
@@ -118,8 +117,8 @@ public class DAO {
             }
             disconnect();
         } catch ( Exception e ) {
-         System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-         System.exit(0);
+             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+             System.exit(0);
         }
         return temp;
     }

@@ -32,7 +32,8 @@ class OrderTest {
         assertEquals(4, order.getBasket().getAmount((Product)order.getBasket().getIterator().next()),
                 "Test product add to basket");
 
-        assertFalse(order.addToBasket(new String[]{"pineapple", "dd"}));
+        assertFalse(order.addToBasket(new String[]{"pineapple", "dd"}), "Product with wrong amount add");
+        assertFalse(order.addToBasket(new String[]{"dzwig", "4"}), "Product not existing in database add");
         System.out.println("Product add from order to basket test passed");
     }
 
